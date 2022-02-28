@@ -18,7 +18,7 @@ local function _make_command(url, auth_key, text, command_args, options)
         ('"target_lang=%s"'):format(command_args.target),
     }
 
-    if command_args.from then
+    if command_args.source then
         local append = { "-d", ('"source_lang=%s"'):format(command_args.source) }
         cmd = vim.list_extend(cmd, append)
     end
