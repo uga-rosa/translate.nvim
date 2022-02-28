@@ -41,6 +41,7 @@ function M._selected_text(is_visual)
         local pos = { { row = row, col = { 1, #line } } }
         pos._lines = { line }
         pos._mode = "n"
+        line = vim.trim(line)
         return line, pos
     else
         local mode = vim.b.translate_old_mode
