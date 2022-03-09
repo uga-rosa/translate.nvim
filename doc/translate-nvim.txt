@@ -403,6 +403,8 @@ Function passed the result of translation.
         split ~
 
         Split the window and output the result to it.
+        The name of the output buffer is 'translate://output' and the file
+        type of it is 'translate'.
         See |translate-nvim-options-output-split|.
 
                                        *translate-nvim-preset-output-floating*
