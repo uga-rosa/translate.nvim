@@ -1,8 +1,7 @@
-local api = vim.api
-local fn = vim.fn
 local luv = vim.loop
 
 local config = require("translate.config")
+local select = require("translate.util.select")
 
 local M = {}
 
@@ -13,10 +12,10 @@ function M.translate(count, ...)
         count = { count, "number" },
     })
 
-    local is_visual = count ~= 0
-    local text, pos = M._selected_text(is_visual)
-
     local args = M._parse_args({ ... })
+
+    local is_visual = count ~= 0
+    local text, pos = select.get(args, is_visual)
 
     M._translate(text, pos, args)
 end
@@ -26,63 +25,17 @@ function M._parse_args(opts)
     for _, opt in ipairs(opts) do
         local name, arg = opt:match("-(%l+)=(.*)")
         if not name then
-            name = "target"
-            arg = opt
+            name = opt:match("-(%l+)")
+            if name then
+                arg = true
+            else
+                name = "target"
+                arg = opt
+            end
         end
         args[name] = arg
     end
     return args
-end
-
-function M._selected_text(is_visual)
-    if not is_visual then
-        local line = api.nvim_get_current_line()
-        local row = fn.line(".")
-        local pos = { { row = row, col = { 1, #line } } }
-        pos._lines = { line }
-        pos._mode = "n"
-        line = vim.trim(line)
-        return line, pos
-    else
-        local mode = vim.b.translate_old_mode
-
-        local tl = fn.getpos("'<")
-        local br = fn.getpos("'>")
-
-        local lines = api.nvim_buf_get_lines(0, tl[2] - 1, br[2], true)
-
-        local pos = {}
-        pos._lines = lines
-        pos._mode = mode
-
-        if mode == "v" then
-            for i, line in ipairs(lines) do
-                pos[i] = { row = tl[2] + i - 1, col = { 1, #line } }
-                if i == 1 then
-                    pos[i].col[1] = tl[3]
-                end
-                if i == #lines then
-                    pos[i].col[2] = br[3]
-                end
-            end
-        elseif mode == "V" then
-            for i, line in ipairs(lines) do
-                pos[i] = { row = tl[2] + i - 1, col = { 1, #line } }
-            end
-        elseif mode == "" then
-            for i, _ in ipairs(lines) do
-                pos[i] = { row = tl[2] + i - 1, col = { tl[3], br[3] } }
-            end
-        end
-
-        local text = {}
-        for i, p in ipairs(pos) do
-            text[i] = vim.trim(lines[i]:sub(p.col[1], p.col[2]))
-        end
-        text = table.concat(text, " ")
-
-        return text, pos
-    end
 end
 
 local function pipes()

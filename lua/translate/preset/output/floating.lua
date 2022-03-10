@@ -1,6 +1,6 @@
 local api = vim.api
 
-local utf8 = require("translate.utf8")
+local utf8 = require("translate.util.utf8")
 
 local M = {}
 
