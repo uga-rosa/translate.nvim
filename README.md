@@ -92,8 +92,8 @@ I put the quote from the help in the fold.
                     if omitted, |translate-nvim-options-default-output|.
 
 
-            If mapping |:Translate|, Do NOT use |<Cmd>|. In order to get the
-            selection exactly right, I hook a process in |ModeChanged|.
+            If mapping |:Translate|, Do NOT use |<Cmd>|. I use [range] to check
+            whether this command is called from normal mode or visual mode.
 
             Please map them as follows.
 
