@@ -13,7 +13,7 @@ function M.get(args, is_visual)
 end
 
 function L.get_visual_selected()
-    local mode = vim.b.translate_old_mode
+    local mode = fn.visualmode()
 
     local tl = fn.getpos("'<")
     local br = fn.getpos("'>")
