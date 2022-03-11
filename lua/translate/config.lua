@@ -69,7 +69,9 @@ M.config = {
                 base = "bottom",
                 off = 0,
             },
-            replace = nil,
+            replace = {
+                mode = "head",
+            },
             register = {
                 name = vim.v.register,
             },

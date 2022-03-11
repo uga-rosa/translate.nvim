@@ -15,10 +15,14 @@ end
 function L.get_visual_selected()
     local mode = fn.visualmode()
 
+    -- {bufnum, lnum, col, off}
     local tl = fn.getpos("'<")
     local br = fn.getpos("'>")
 
-    local lines = api.nvim_buf_get_lines(0, tl[2] - 1, br[2], true)
+    local pos_s = { tl[2], tl[3] }
+    local pos_e = { br[2], br[3] }
+
+    local lines = api.nvim_buf_get_lines(0, pos_s[1] - 1, pos_e[1], true)
 
     local pos = {}
     pos._lines = lines
@@ -26,41 +30,34 @@ function L.get_visual_selected()
 
     if mode == "v" then
         for i, line in ipairs(lines) do
-            pos[i] = { row = tl[2] + i - 1, col = { 1, #line } }
+            local p = { row = pos_s[1] + i - 1, col = { 1, #line } }
             if i == 1 then
-                pos[i].col[1] = tl[3]
+                p.col[1] = pos_s[2]
             end
             if i == #lines then
-                pos[i].col[2] = br[3]
+                p.col[2] = pos_e[2]
             end
+            table.insert(pos, p)
         end
     elseif mode == "V" then
         for i, line in ipairs(lines) do
-            pos[i] = { row = tl[2] + i - 1, col = { 1, #line } }
+            table.insert(pos, { row = pos_s[1] + i - 1, col = { 1, #line } })
         end
     elseif mode == "" then
         for i, _ in ipairs(lines) do
-            pos[i] = { row = tl[2] + i - 1, col = { tl[3], br[3] } }
+            table.insert(pos, { row = pos_s[1] + i - 1, col = { pos_s[2], pos_e[2] } })
         end
     end
 
-    local text = {}
-    for i, p in ipairs(pos) do
-        text[i] = vim.trim(lines[i]:sub(p.col[1], p.col[2]))
-    end
-    text = table.concat(text, " ")
-
-    return text, pos
+    return pos
 end
 
 function L.get_current_line()
     local line = api.nvim_get_current_line()
-    local row = fn.line(".")
     local pos = { { row = row, col = { 1, #line } } }
     pos._lines = { line }
     pos._mode = "n"
-    line = vim.trim(line)
-    return line, pos
+    return pos
 end
 
 return M

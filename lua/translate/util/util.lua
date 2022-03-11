@@ -46,19 +46,4 @@ function M.append_dict_list(dict, key, elem)
     table.insert(dict[key], elem)
 end
 
-function M.intersection(s1, s2)
-    local set1 = {}
-    for _, s in ipairs(s1) do
-        set1[s] = true
-    end
-
-    local inter = {}
-    for _, s in ipairs(s2) do
-        if set1[s] then
-            table.insert(inter, s)
-        end
-    end
-    return inter
-end
-
 return M

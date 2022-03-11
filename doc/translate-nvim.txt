@@ -366,11 +366,15 @@ Options passed to the presets.
 				*translate-nvim-option-preset-output-replace*
 		replace ~
 		
-		nil
+		table
+		defalut: {
+		    mode = 'head'
+		}
+
+		You can choose the behavior of replace: 'head' respects the
+		starting position and the original position; 'rate' calculates
+		and distributes a percentage of the length of each original line.
 		
-		There are currently no options for 'replace'.
-		
-		When using this mode, do NOT use |CTRL-V|.
 	
 				*translate-nvim-option-preset-output-register*
 		register ~

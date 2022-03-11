@@ -1,8 +1,10 @@
 local api = vim.api
 
-local utf8 = require("translate.util.utf8")
+local separate = require("translate.util.separate")
 
-local M = {}
+local M = {
+    window = {},
+}
 
 function M.cmd(text, _)
     M.window.close()
@@ -26,8 +28,6 @@ function M.cmd(text, _)
     vim.cmd('au CursorMoved * ++once lua require("translate.preset.output.floating").window.close()')
 end
 
-M.window = {}
-
 function M.window.close()
     if M.window._current then
         api.nvim_win_close(M.window._current.win, false)
@@ -41,21 +41,7 @@ function M.window.shape(text, width)
         width = math.floor(api.nvim_win_get_width(0) * width)
     end
 
-    local lines = { {} }
-    local row, col = 1, 0
-    for _, char in utf8.codes(text) do
-        local length = api.nvim_strwidth(char)
-        if col + length > width then
-            lines[row] = table.concat(lines[row], "")
-            row = row + 1
-            lines[row] = {}
-            col = 0
-        end
-        table.insert(lines[row], char)
-        col = col + length
-    end
-
-    lines[row] = table.concat(lines[row], "")
+    local lines = separate.text_cut(text, width)
 
     if #lines == 1 then
         width = api.nvim_strwidth(lines[1])
