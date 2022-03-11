@@ -1,38 +1,5 @@
 local M = {}
 
-local function escape(text)
-    text = text:gsub('"', '\\"')
-    return text
-end
-
-local function _make_command(url, auth_key, text, command_args, options)
-    local cmd = {
-        "curl",
-        "-s",
-        url,
-        "-d",
-        ('"auth_key=%s"'):format(auth_key),
-        "-d",
-        ('"text=%s"'):format(escape(text)),
-        "-d",
-        ('"target_lang=%s"'):format(command_args.target),
-    }
-
-    if command_args.source then
-        local append = { "-d", ('"source_lang=%s"'):format(command_args.source) }
-        cmd = vim.list_extend(cmd, append)
-    end
-
-    if #options.args then
-        cmd = vim.list_extend(cmd, options.args)
-    end
-
-    cmd = table.concat(cmd, " ")
-    cmd = cmd .. " | jq -r .translations[].text"
-
-    return cmd
-end
-
 function M.make_command(name)
     local url
     if name == "deepl_pro" then
@@ -48,17 +15,34 @@ function M.make_command(name)
 
         local options = require("translate.config").get("preset").command[name]
 
-        local cmd = "sh"
+        local cmd = "curl"
         local args = {
-            "-c",
-            _make_command(url, vim.g.deepl_api_auth_key, text, command_args, options),
+            "-X",
+            "POST",
+            "-s",
+            url,
+            "-d",
+            "auth_key=" .. vim.g.deepl_api_auth_key,
+            "-d",
+            "text=" .. text,
+            "-d",
+            "target_lang=" .. command_args.target,
         }
+
+        if command_args.source then
+            table.insert(args, "-d")
+            table.insert(args, "source_lang" .. command_args.source)
+        end
+
+        if #options.args > 0 then
+            args = vim.list_extend(args, options.args)
+        end
 
         return cmd, args
     end
 end
 
-function M.complete_list(is_to)
+function M.complete_list(is_target)
     -- See <https://www.deepl.com/docs-api/translating-text/>
     local list = {
         "BG",
@@ -87,7 +71,7 @@ function M.complete_list(is_to)
         "ZH",
     }
 
-    if is_to then
+    if is_target then
         local append = {
             "EN-GB",
             "EN-US",

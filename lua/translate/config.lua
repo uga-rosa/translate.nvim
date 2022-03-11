@@ -1,13 +1,17 @@
 local M = {}
 
 M._preset = {
+    parse_before = {
+        concat = require("translate.preset.parse_before.concat"),
+        trim = require("translate.preset.parse_before.trim"),
+    },
     command = {
         translate_shell = require("translate.preset.command.translate_shell"),
         deepl_free = require("translate.preset.command.deepl_free"),
         deepl_pro = require("translate.preset.command.deepl_pro"),
     },
-    parse = {
-        remove_newline = require("translate.preset.parse.remove_newline"),
+    parse_after = {
+        remove_newline = require("translate.preset.parse_after.remove_newline"),
     },
     output = {
         floating = require("translate.preset.output.floating"),
@@ -20,14 +24,21 @@ M._preset = {
 
 M.config = {
     default = {
+        parse_before = "trim,concat",
         command = "translate_shell",
-        parse = "remove_newline",
+        parse_after = "remove_newline",
         output = "floating",
     },
+    parse_before = {},
     command = {},
-    parse = {},
+    parse_after = {},
     output = {},
     preset = {
+        parse_before = {
+            concat = {
+                sep = " ",
+            },
+        },
         command = {
             translate_shell = {
                 args = { "-b", "-no-ansi" },
@@ -75,30 +86,32 @@ function M.get(name)
     return M.config[name]
 end
 
-local function _get(mode, name)
+function M.get_func(mode, name)
     name = name or M.config.default[mode]
     local module = M.config[mode][name] or M._preset[mode][name]
-    if module then
-        if module.cmd then
-            return module.cmd
-        end
-        error(string.format("Invalid format (%s: %s): cannot find 'cmd'", mode, name))
+    if module and module.cmd then
+        return module.cmd, name
     else
-        error(string.format("Invalid %s: %s", mode, name))
+        error(("Invalid name of %s: %s"):format(module, name))
     end
 end
 
-function M.get_command(name)
-    return _get("command", name)
+function M.get_funcs(mode, names)
+    names = names or M.config.default[mode]
+    names = vim.split(names, ",")
+    local modules = {}
+    for _, name in ipairs(names) do
+        local module = M.config[mode][name] or M._preset[mode][name]
+        if module and module.cmd then
+            table.insert(modules, module.cmd)
+        else
+            error(("Invalid name of %s: %s"):format(module, name))
+        end
+    end
+    return modules, names
 end
 
-function M.get_parse(name)
-    return _get("parse", name)
-end
-
-function M.get_output(name)
-    return _get("output", name)
-end
+-- For complete of command ':Translate'
 
 local function get_keys(mode)
     local keys = vim.tbl_keys(M.config[mode])

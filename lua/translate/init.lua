@@ -13,22 +13,21 @@ function M.translate(count, ...)
     })
 
     local args = M._parse_args({ ... })
-
     local is_visual = count ~= 0
-    local text, pos = select.get(args, is_visual)
+    local pos = select.get(args, is_visual)
 
-    M._translate(text, pos, args)
+    M._translate(pos, args)
 end
 
 function M._parse_args(opts)
     local args = {}
     for _, opt in ipairs(opts) do
-        local name, arg = opt:match("-(%l+)=(.*)")
+        local name, arg = opt:match("-(%l+)=(.*)") -- e.g. '-command=translate_shell'
         if not name then
-            name = opt:match("-(%l+)")
+            name = opt:match("-(%l+)") -- e.g. '-comment'
             if name then
                 arg = true
-            else
+            else -- '{target-lang}'
                 name = "target"
                 arg = opt
             end
@@ -45,12 +44,22 @@ local function pipes()
     return { stdin, stdout, stderr }
 end
 
-function M._translate(text, pos, cmd_args)
-    local command_func = config.get_command(cmd_args.command)
-    local parse_func = config.get_parse(cmd_args.parse)
-    local output_func = config.get_output(cmd_args.output)
+function M._translate(pos, cmd_args)
+    local parse_before = config.get_funcs("parse_before", cmd_args.parse_before)
+    local command, command_name = config.get_func("command", cmd_args.command)
+    local parse_after = config.get_funcs("parse_after", cmd_args.parse_after)
+    local output = config.get_func("output", cmd_args.output)
 
-    local cmd, args = command_func(text, cmd_args)
+    if vim.tbl_contains({ "deepl_pro", "deepl_free" }, command_name) then
+        local parse_deepl = require("translate.preset.parse_after.deepl").cmd
+        table.insert(parse_after, 1, parse_deepl)
+    end
+
+    local lines = M._selection(pos)
+
+    local text = M._run(parse_before, lines)
+
+    local cmd, args = command(text, cmd_args)
     local stdio = pipes()
 
     local handle
@@ -72,13 +81,29 @@ function M._translate(text, pos, cmd_args)
         stdio[2],
         vim.schedule_wrap(function(err, data)
             assert(not err, err)
-
             if data then
-                data = parse_func(data)
-                output_func(data, pos)
+                data = M._run(parse_after, data)
+                output(data, pos)
             end
         end)
     )
+end
+
+function M._selection(pos)
+    local lines = {}
+    for i, line in ipairs(pos._lines) do
+        local col = pos[i].col
+        table.insert(lines, line:sub(col[1], col[2]))
+    end
+    return lines
+end
+
+function M._run(functions, ...)
+    local args = { ... }
+    for _, func in ipairs(functions) do
+        args = { func(unpack(args)) }
+    end
+    return unpack(args)
 end
 
 return M

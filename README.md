@@ -25,7 +25,7 @@
 If you use [translate-shell](https://github.com/soimort/translate-shell), you need to install `trans` command.
 
 If you use [DeepL API Pro/Free](https://www.deepl.com/en/docs-api/), you need the authorization key for DeepL API Pro/Free.
-In addition, you need [curl](https://curl.se/) to send the request and [jq](https://github.com/stedolan/jq) to parse the response.
+In addition, you need [curl](https://curl.se/) to send the request.
 
 
 # Quick start
@@ -72,33 +72,38 @@ I put the quote from the help in the fold.
 
     :[range]Translate {target-lang} [{-options}...]
 
-            {target-lang}: The language into which the text should be translated.
-            The format varies depending on the external command used.
+        {target-lang}: The language into which the text should be translated.
+        The format varies depending on the external command used.
 
-            |:Translate| can take |:range|. |v|, |V| and |CTRL-V| are supported.
-            If it was not given, |:Translate| treats current cursor line.
+        |:Translate| can take |:range|. |v|, |V| and |CTRL-V| are supported.
+        If it was not given, |:Translate| treats current cursor line.
 
-            available options:
-                - '-source='
-                    The language of the text to be translated.
-                - '-command='
-                    The extermal command to use translation. if omitted,
-                    |translate-nvim-options-default-command| is used.
-                - '-parse='
-                    The function to format the result of extermal command.
-                    if omitted, |translate-nvim-options-default-parse|.
-                - '-output='
-                    The function to pass the translation result.
-                    if omitted, |translate-nvim-options-default-output|.
+        available options:
+            - '-source='
+                The language of the text to be translated.
+            - '-parse_before='
+                The functions to format texts of selection.
+                You can use a comma-separated string.
+                If omitted, |translate-nvim-option-default-parse-before|.
+            - '-command='
+                The extermal command to use translation. If omitted,
+                |translate-nvim-option-default-command| is used.
+            - '-parse_after='
+                The functions to format the result of extermal command.
+                You can use a comma-separated string.
+                If omitted, |translate-nvim-option-default-parse-after|.
+            - '-output='
+                The function to pass the translation result.
+                If omitted, |translate-nvim-option-default-output|.
 
 
-            If mapping |:Translate|, Do NOT use |<Cmd>|. I use [range] to check
-            whether this command is called from normal mode or visual mode.
+        If mapping |:Translate|, Do NOT use |<Cmd>|. I use [range] to check
+        whether this command is called from normal mode or visual mode.
 
-            Please map them as follows.
+        Please map them as follows.
 
-                nnoremap ,j :<C-u>Translate EN -output=insert<CR>
-                xnoremap ,j :Translate EN -output=insert<CR>
+	    nnoremap ,j :<C-u>Translate EN -output=insert<CR>
+	    xnoremap ,j :Translate EN -output=insert<CR>
 
 
 </div></details>
@@ -110,21 +115,21 @@ As noted in the help, do not use `<Cmd>` when mapping the :Translate command.
 This is my setting.
 
 ```vim
-nnoremap ,jf :<C-u>Translate JA -output=floating<CR>
-xnoremap ,jf :Translate JA -output=floating<CR>
-nnoremap ,js :<C-u>Translate JA -output=split<CR>
-xnoremap ,js :Translate JA -output=split<CR>
-nnoremap ,ji :<C-u>Translate JA -output=insert<CR>
-xnoremap ,ji :Translate JA -output=insert<CR>
-nnoremap ,jr :<C-u>Translate JA -output=replace<CR>
-xnoremap ,jr :Translate JA -output=replace<CR>
+nnoremap mjf :<C-u>Translate JA -output=floating<CR>
+xnoremap mjf :Translate JA -output=floating<CR>
+nnoremap mjs :<C-u>Translate JA -output=split<CR>
+xnoremap mjs :Translate JA -output=split<CR>
+nnoremap mji :<C-u>Translate JA -output=insert<CR>
+xnoremap mji :Translate JA -output=insert<CR>
+nnoremap mjr :<C-u>Translate JA -output=replace<CR>
+xnoremap mjr :Translate JA -output=replace<CR>
 
-nnoremap ,ef :<C-u>Translate EN -output=floating<CR>
-xnoremap ,ef :Translate EN -output=floating<CR>
-nnoremap ,es :<C-u>Translate EN -output=split<CR>
-xnoremap ,es :Translate EN -output=split<CR>
-nnoremap ,ei :<C-u>Translate EN -output=insert<CR>
-xnoremap ,ei :Translate EN -output=insert<CR>
-nnoremap ,er :<C-u>Translate EN -output=replace<CR>
-xnoremap ,er :Translate EN -output=replace<CR>
+nnoremap mef :<C-u>Translate EN -output=floating<CR>
+xnoremap mef :Translate EN -output=floating<CR>
+nnoremap mes :<C-u>Translate EN -output=split<CR>
+xnoremap mes :Translate EN -output=split<CR>
+nnoremap mei :<C-u>Translate EN -output=insert<CR>
+xnoremap mei :Translate EN -output=insert<CR>
+nnoremap mer :<C-u>Translate EN -output=replace<CR>
+xnoremap mer :Translate EN -output=replace<CR>
 ```
