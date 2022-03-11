@@ -64,6 +64,7 @@ M.config = {
                 cmd = "topleft 5sp",
                 filetype = "translate",
                 append = false,
+                mode = "oneline",
             },
             insert = {
                 base = "bottom",

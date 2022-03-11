@@ -1,10 +1,21 @@
 local fn = vim.fn
 local api = vim.api
 
+local separate = require("translate.util.separate")
+
 local M = {}
 
-function M.cmd(text)
+function M.cmd(text, pos)
     local options = require("translate.config").get("preset").output.split
+
+    local lines
+    if options.mode == "oneline" then
+        lines = { text }
+    elseif vim.tbl_contains({ "rate", "head" }, options.mode) then
+        lines = separate.separate(options.mode, text, pos)
+    else
+        error(("Invalid mode of split: %s"):format(options.mode))
+    end
 
     local current = fn.win_getid()
 
@@ -24,16 +35,13 @@ function M.cmd(text)
         vim.bo.filetype = options.filetype
     end
 
-    if options.append then
-        if fn.line("$") == 1 and fn.getline(1) == "" then
-            api.nvim_buf_set_lines(0, 0, -1, false, { text })
-        else
-            api.nvim_buf_set_lines(0, -1, -1, false, { text })
-        end
-    else
+    if not options.append then
         vim.cmd("% d")
-        api.nvim_buf_set_lines(0, 0, -1, false, { text })
     end
+    api.nvim_buf_set_lines(0, 0, 0, false, lines)
+
+    -- Move cursor to top
+    api.nvim_win_set_cursor(0, {1, 0})
 
     fn.win_gotoid(current)
 end

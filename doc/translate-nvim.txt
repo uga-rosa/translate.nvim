@@ -339,12 +339,16 @@ Options passed to the presets.
 			name = "translate://output",
 			filetype = "translate",
 			append = false,
+			mode = "oneline",
 		}
 
 		'cmd' is a command used to split current window in two.
-		'name' is the name of the split buffer, and 'filetype' is set to it.
-		By default, it deletes the buffer contents each time. If 'append' is
-		true, the translation result will be added to the last line.
+		'name' is the name of the split buffer, and 'filetype' is set
+		to it. By default, it deletes the buffer contents each time.
+		If 'append' is true, the translation result will be added to
+		the last line. 'mode' is used to break lines in the translation
+		result, either on a single line if 'oneline', or similar to those
+		of 'replace' if 'head' or 'rate'.
 
 				*translate-nvim-option-preset-output-insert*
 		insert ~
