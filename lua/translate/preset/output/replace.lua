@@ -1,3 +1,4 @@
+local util = require "translate.util.util"
 local api = vim.api
 
 local M = {}
@@ -22,6 +23,14 @@ function M.cmd(lines, pos)
             local suf = lines_origin[i]:sub(p.col[2] + 1)
 
             lines[i] = pre .. (lines[i] or "") .. suf
+        end
+    end
+
+    if mode == "n" or (mode == "v" and #lines > 1) or mode == "V" then
+        local indents = util.indent(pos)
+        local start_line = mode == "v" and 2 or 1
+        for i = start_line, #lines do
+            lines[i] = indents[i] .. lines[i]
         end
     end
 

@@ -91,4 +91,13 @@ function M.max_width_in_string_list(list)
     return max
 end
 
+function M.indent(pos)
+    local indents = {}
+    for _, line in ipairs(pos._lines) do
+        local indent = line:match("^%s*")
+        table.insert(indents, indent)
+    end
+    return indents
+end
+
 return M
