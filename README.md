@@ -1,5 +1,7 @@
 # translate.nvim
 
+WIP: Available, but still incomplete in some features and subject to destructive changes in the future.
+
 ![demo](https://user-images.githubusercontent.com/82267684/158013979-52c8ca49-84e1-4ca0-bf30-b8165cca9135.gif)
 
 # Features
@@ -131,3 +133,8 @@ xnoremap <silent> mei :Translate EN -parse_after=remove_newline,head -output=ins
 nnoremap <silent> mer :<C-u>Translate EN -parse_after=remove_newline,head -output=replace<CR>
 xnoremap <silent> mer :Translate EN -parse_after=remove_newline,head -output=replace<CR>
 ```
+
+## TODO
+
+- output/replace: Respect indentation
+- text select: If the comment is under the cursor, you can select the entire comment.
