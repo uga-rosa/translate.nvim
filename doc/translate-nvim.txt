@@ -1,36 +1,42 @@
 *translate-nvim.txt*			Use external translate command in nvim
 
 ==============================================================================
-Contents					*translate-nvim-contents*
+Contents						*translate-nvim-contents*
 
-Introduction				|translate-nvim-introduction|
-Command					|translate-nvim-command|
-Setup					|translate-nvim-setup|
-Option					|translate-nvim-option|
-    defalut				|translate-nvim-option-default|
-    command				|translate-nvim-option-command|
-    parse_before			|translate-nvim-option-parse-before|
-    parse_after				|translate-nvim-option-parse-after|
-    output				|translate-nvim-option-output|
-    preset				|translate-nvim-option-preset|
-    silent				|translate-nvim-option-silent|
-preset					|translate-nvim-preset|
-    parse_before			|translate-nvim-preset-parse-before|
-	trim				|translate-nvim-preset-parse-before-trim|
-	concat				|translate-nvim-preset-parse-before-concat|
-    command				|translate-nvim-preset-command|
-	translate_shell			|translate-nvim-preset-command-translate-shell|
-	deepl_free			|translate-nvim-preset-command-deepl-free|
-	deepl_pro			|translate-nvim-preset-command-deepl-pro|
-    parse_after				|translate-nvim-preset-parse-after|
-	remove_newline			|translate-nvim-preset-parse-after-remove-newline|
-    output				|translate-nvim-preset-output|
-	floating			|translate-nvim-preset-output-floating|
-	split				|translate-nvim-preset-output-split|
-	insert				|translate-nvim-preset-output-insert|
-	replace				|translate-nvim-preset-output-replace|
-	register			|translate-nvim-preset-output-register|
-Variables				|translate-nvim-variables|
+Introduction					|translate-nvim-introduction|
+Command							|translate-nvim-command|
+Setup							|translate-nvim-setup|
+Option							|translate-nvim-option|
+    defalut						|translate-nvim-option-default|
+    command						|translate-nvim-option-command|
+    parse_before				|translate-nvim-option-parse-before|
+    parse_after					|translate-nvim-option-parse-after|
+    output						|translate-nvim-option-output|
+    preset						|translate-nvim-option-preset|
+    silent						|translate-nvim-option-silent|
+preset							|translate-nvim-preset|
+    parse_before				|translate-nvim-preset-parse-before|
+		trim					|translate-nvim-preset-parse-before-trim|
+		concat					|translate-nvim-preset-parse-before-concat|
+    command						|translate-nvim-preset-command|
+		translate_shell			|translate-nvim-preset-command-translate-shell|
+		deepl_free				|translate-nvim-preset-command-deepl-free|
+		deepl_pro				|translate-nvim-preset-command-deepl-pro|
+    parse_after					|translate-nvim-preset-parse-after|
+		remove_newline			|translate-nvim-preset-parse-after-remove-newline|
+		oneline					|translate-nvim-preset-parse-after-oneline|
+		head					|translate-nvim-preset-parse-after-head|
+		rate					|translate-nvim-preset-parse-after-rate|
+		window					|translate-nvim-preset-parse-after-window|
+		deepl					|translate-nvim-preset-parse-after-deepl|
+		deepl					|translate-nvim-preset-parse-after-deepl|
+    output						|translate-nvim-preset-output|
+		floating				|translate-nvim-preset-output-floating|
+		split					|translate-nvim-preset-output-split|
+		insert					|translate-nvim-preset-output-insert|
+		replace					|translate-nvim-preset-output-replace|
+		register				|translate-nvim-preset-output-register|
+Variables						|translate-nvim-variables|
 
 
 ==============================================================================
@@ -86,8 +92,8 @@ Command							*translate-nvim-command*
 	Please map them as follows.
 
 >
-	    nnoremap ,j :<C-u>Translate EN -output=insert<CR>
-	    xnoremap ,j :Translate EN -output=insert<CR>
+	    nnoremap ,j :<C-u>Translate EN -parse_after=oneline -output=insert<CR>
+	    xnoremap ,j :Translate EN -parse_after=oneline -output=insert<CR>
 <
 
 
@@ -126,6 +132,7 @@ table
 'parse_before', 'command', 'parse_after' and 'output' used by |:Translate|.
 See |translate-nvim-preset|, to check the presets provided by |translate-nvim|.
 
+
 				*translate-nvim-option-default-parse-before*
 	parse_before ~
 
@@ -135,6 +142,7 @@ See |translate-nvim-preset|, to check the presets provided by |translate-nvim|.
 	See |translate-nvim-preset-parse-before-trim| and
 	|translate-nvim-preset-parse-before-concat|.
 
+
 					*translate-nvim-option-default-command*
 	command ~
 
@@ -143,13 +151,16 @@ See |translate-nvim-preset|, to check the presets provided by |translate-nvim|.
 
 	See |translate-nvim-preset-command-translate-shell|.
 	
+
 				*translate-nvim-option-default-parse-after*
 	parse_after ~
 
 	string
-	default: 'remove_newline'
+	default: 'remove_newline,floating'
 	
-	See |translate-nvim-preset-parse-after-remove-newline|.
+	See |translate-nvim-preset-parse-after-remove-newline| and
+	|translate-nvim-preset-parse-after-floating|.
+
 
 					*translate-nvim-option-default-output*
 	output ~
@@ -302,9 +313,31 @@ Options passed to the presets.
 				*translate-nvim-option-preset-parse-after*
 	parse_after ~
 
-	nil
 
-	There are currently no options for 'parse_after'.
+			*translate-nvim-option-preset-parse-after-remove-newline*
+			*translate-nvim-option-preset-parse-after-oneline*
+			*translate-nvim-option-preset-parse-after-head*
+			*translate-nvim-option-preset-parse-after-rate*
+			*translate-nvim-option-preset-parse-after-deepl*
+		remove_newline, oneline, head, rate, deepl ~
+
+		nil
+		
+		There are currently no options for these.
+
+
+			*translate-nvim-option-preset-parse-after-window*
+		floating ~
+
+		table:
+		default: {
+			width = 0.8
+		}
+
+		'width' is a percentage of the current window width.
+		'parse_after/window' returns an array of text divided
+		to fit within this width.
+
 
 
 					*translate-nvim-option-preset-output*
@@ -318,7 +351,7 @@ Options passed to the presets.
 		default: {
 		    relative = "cursor",
 		    style = "minimal",
-		    width = 0.8,
+		    width = nil,
 		    height = nil,
 		    row = 1,
 		    col = 1,
@@ -327,8 +360,9 @@ Options passed to the presets.
 		
 		Option passed as the 3rd argument of |nvim_open_win()|.
 		
-		If 'width' is less than 1, it will treated as a percentage of the
-		current buffer. 'height' will be calculated automatically.
+		The 'width' and 'height' are automatically calculated from the
+		received array.
+
 
 				*translate-nvim-option-preset-output-split*
 		split ~
@@ -370,10 +404,6 @@ Options passed to the presets.
 				*translate-nvim-option-preset-output-replace*
 		replace ~
 		
-		table
-		defalut: {
-		    mode = 'head'
-		}
 
 		You can choose the behavior of replace: 'head' respects the
 		starting position and the original position; 'rate' calculates
@@ -479,6 +509,48 @@ functions receive the return value of the previous function.
 	remove_newline ~
 
 	Remove \r and \n.
+	The reason for using this is that the text to be inserted into the
+	buffer is a line-by-line array, and an error will occur if each
+	element of the array contains a newline character.
+
+
+					*translate-nvim-preset-parse-after-oneline*
+	oneline ~
+
+	Returns an array whose only element is the received text as is.
+	It is intended to be used with 'split', 'insert', and 'replace'.
+	It is deprecated for use in 'floating' as it may not fit on the
+	screen.
+
+
+					*translate-nvim-preset-parse-after-head*
+	head ~
+
+	Returns an array of text divided to fit the display width of the
+	original selection. The number of lines and the display width of
+	the last line are not guaranteed because the number of characters
+	changes before and after the translation.
+	It is intended to be used with 'split', 'insert', 'replace', and
+	'window'.
+
+
+					*translate-nvim-preset-parse-after-rate*
+	rate ~
+
+	Returns an array of the received string divided by the ratio of
+	the display width of each row of the original selection.
+	It is intended to be used with 'split', 'insert', 'replace', and
+	'window'.
+
+
+					*translate-nvim-preset-parse-after-window*
+	rate ~
+
+	Returns an array of received strings divided by the percentage of
+	the current window width. Default is 0.8. Use
+	|translate-nvim-option-preset-parse-after-window| to change it.
+	It is intended to be used with 'split', 'insert', 'replace', and
+	'window'.
 
 
 					*translate-nvim-preset-parse-after-deepl*

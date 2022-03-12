@@ -1,3 +1,6 @@
+local api = vim.api
+local utf8 = require("translate.util.utf8")
+
 local M = {}
 
 ---Copy the table
@@ -44,6 +47,48 @@ function M.append_dict_list(dict, key, elem)
         dict[key] = {}
     end
     table.insert(dict[key], elem)
+end
+
+function M.text_cut(text, widths)
+    local widths_is_table = type(widths) == "table"
+
+    local lines = {}
+    local row, col = 1, 0
+    for p, char in utf8.codes(text) do
+        local l = api.nvim_strwidth(char)
+        local width = widths_is_table and widths[row] or widths
+
+        if col + l > width then
+            if widths_is_table and widths[row + 1] == nil then
+                local residue = text:sub(p)
+                M.append_dict_list(lines, row, residue)
+                break
+            end
+
+            row = row + 1
+            col = 0
+        end
+
+        M.append_dict_list(lines, row, char)
+        col = col + l
+    end
+
+    for i, line in ipairs(lines) do
+        lines[i] = table.concat(line, "")
+    end
+
+    return lines
+end
+
+function M.max_width_in_string_list(list)
+    local max = api.nvim_strwidth(list[1])
+    for i = 2, #list do
+        local v = api.nvim_strwidth(list[i])
+        if v > max then
+            max = v
+        end
+    end
+    return max
 end
 
 return M

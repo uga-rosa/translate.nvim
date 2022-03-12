@@ -1,13 +1,12 @@
 local api = vim.api
 
-local separate = require("translate.util.separate")
-
 local M = {}
 
-function M.cmd(text, pos)
-    local option = require("translate.config").get("preset").output.replace
+function M.cmd(lines, pos)
+    if type(lines) == "string" then
+        lines = { lines }
+    end
 
-    local lines = separate.separate(option.mode, text, pos)
     local lines_origin = pos._lines
     local mode = pos._mode
 

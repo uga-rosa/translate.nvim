@@ -16,15 +16,19 @@ function M.translate(count, ...)
     local is_visual = count ~= 0
     local pos = select.get(args, is_visual)
 
+    if not pos then
+        error("Selection could not be recognized.")
+    end
+
     M._translate(pos, args)
 end
 
 function M._parse_args(opts)
     local args = {}
     for _, opt in ipairs(opts) do
-        local name, arg = opt:match("-(%l+)=(.*)") -- e.g. '-command=translate_shell'
+        local name, arg = opt:match("-([a-z_]+)=(.*)") -- e.g. '-parse_after=head'
         if not name then
-            name = opt:match("-(%l+)") -- e.g. '-comment'
+            name = opt:match("-(%l+)") -- for '-comment'
             if name then
                 arg = true
             else -- '{target-lang}'
@@ -47,10 +51,10 @@ end
 function M._translate(pos, cmd_args)
     local parse_before = config.get_funcs("parse_before", cmd_args.parse_before)
     local command, command_name = config.get_func("command", cmd_args.command)
-    local parse_after = config.get_funcs("parse_after", cmd_args.parse_after)
+    local parse_after, parse_after_name = config.get_funcs("parse_after", cmd_args.parse_after)
     local output = config.get_func("output", cmd_args.output)
 
-    if vim.tbl_contains({ "deepl_pro", "deepl_free" }, command_name) then
+    if vim.tbl_contains({ "deepl_pro", "deepl_free" }, command_name) and parse_after_name[1] ~= "deepl" then
         local parse_deepl = require("translate.preset.parse_after.deepl").cmd
         table.insert(parse_after, 1, parse_deepl)
     end
@@ -82,7 +86,7 @@ function M._translate(pos, cmd_args)
         vim.schedule_wrap(function(err, data)
             assert(not err, err)
             if data then
-                data = M._run(parse_after, data)
+                data = M._run(parse_after, data, pos)
                 output(data, pos)
             end
         end)
@@ -98,12 +102,11 @@ function M._selection(pos)
     return lines
 end
 
-function M._run(functions, ...)
-    local args = { ... }
+function M._run(functions, arg, pos)
     for _, func in ipairs(functions) do
-        args = { func(unpack(args)) }
+        arg = func(arg, pos)
     end
-    return unpack(args)
+    return arg
 end
 
 return M

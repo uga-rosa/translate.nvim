@@ -53,6 +53,7 @@ function L.get_visual_selected()
 end
 
 function L.get_current_line()
+    local row = fn.line(".")
     local line = api.nvim_get_current_line()
     local pos = { { row = row, col = { 1, #line } } }
     pos._lines = { line }

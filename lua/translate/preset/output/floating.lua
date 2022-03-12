@@ -1,27 +1,27 @@
 local api = vim.api
 
-local separate = require("translate.util.separate")
+local util = require("translate.util.util")
 
 local M = {
     window = {},
 }
 
-function M.cmd(text, _)
+function M.cmd(lines, _)
+    if type(lines) == "string" then
+        lines = { lines }
+    end
+
     M.window.close()
-
-    local options = require("translate.config").get("preset").output.floating
-
-    local lines, width = M.window.shape(text, options.width)
 
     local buf = api.nvim_create_buf(false, true)
     api.nvim_buf_set_lines(buf, 0, -1, true, lines)
 
-    local _width = options.width
-    options.width = width
+    local options = require("translate.config").get("preset").output.floating
+
+    options.width = util.max_width_in_string_list(lines)
     options.height = #lines
 
     local win = api.nvim_open_win(buf, false, options)
-    options.width = _width
 
     M.window._current = { win = win, buf = buf }
 
@@ -34,20 +34,6 @@ function M.window.close()
         api.nvim_buf_delete(M.window._current.buf, {})
         M.window._current = nil
     end
-end
-
-function M.window.shape(text, width)
-    if width <= 1 then
-        width = math.floor(api.nvim_win_get_width(0) * width)
-    end
-
-    local lines = separate.text_cut(text, width)
-
-    if #lines == 1 then
-        width = api.nvim_strwidth(lines[1])
-    end
-
-    return lines, width
 end
 
 return M

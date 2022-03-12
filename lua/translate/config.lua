@@ -12,6 +12,11 @@ M._preset = {
     },
     parse_after = {
         remove_newline = require("translate.preset.parse_after.remove_newline"),
+        oneline = require("translate.preset.parse_after.oneline"),
+        head = require("translate.preset.parse_after.head"),
+        rate = require("translate.preset.parse_after.rate"),
+        window = require("translate.preset.parse_after.window"),
+        deepl = require("translate.preset.parse_after.deepl"),
     },
     output = {
         floating = require("translate.preset.output.floating"),
@@ -26,7 +31,7 @@ M.config = {
     default = {
         parse_before = "trim,concat",
         command = "translate_shell",
-        parse_after = "remove_newline",
+        parse_after = "remove_newline,window",
         output = "floating",
     },
     parse_before = {},
@@ -50,11 +55,15 @@ M.config = {
                 args = {},
             },
         },
+        parse_after = {
+            window = {
+                width = 0.8,
+            },
+        },
         output = {
             floating = {
                 relative = "cursor",
                 style = "minimal",
-                width = 0.8,
                 row = 1,
                 col = 1,
                 border = "single",
@@ -64,14 +73,10 @@ M.config = {
                 cmd = "topleft 5sp",
                 filetype = "translate",
                 append = false,
-                mode = "oneline",
             },
             insert = {
                 base = "bottom",
                 off = 0,
-            },
-            replace = {
-                mode = "head",
             },
             register = {
                 name = vim.v.register,
@@ -108,7 +113,7 @@ function M.get_funcs(mode, names)
         if module and module.cmd then
             table.insert(modules, module.cmd)
         else
-            error(("Invalid name of %s: %s"):format(module, name))
+            error(("Invalid name of %s: %s"):format(mode, name))
         end
     end
     return modules, names

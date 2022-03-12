@@ -1,21 +1,14 @@
 local fn = vim.fn
 local api = vim.api
 
-local separate = require("translate.util.separate")
-
 local M = {}
 
-function M.cmd(text, pos)
-    local options = require("translate.config").get("preset").output.split
-
-    local lines
-    if options.mode == "oneline" then
-        lines = { text }
-    elseif vim.tbl_contains({ "rate", "head" }, options.mode) then
-        lines = separate.separate(options.mode, text, pos)
-    else
-        error(("Invalid mode of split: %s"):format(options.mode))
+function M.cmd(lines, _)
+    if type(lines) == "string" then
+        lines = { lines }
     end
+
+    local options = require("translate.config").get("preset").output.split
 
     local current = fn.win_getid()
 
