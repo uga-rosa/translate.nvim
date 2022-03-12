@@ -44,8 +44,13 @@ function L.get_visual_selected()
             table.insert(pos, { row = pos_s[1] + i - 1, col = { 1, #line } })
         end
     elseif mode == "" then
+        local last_line = fn.getline(pos_e[1])
+        local is_end = pos_e[2] > #last_line -- Selected to the end of each line.
+
         for i, _ in ipairs(lines) do
-            table.insert(pos, { row = pos_s[1] + i - 1, col = { pos_s[2], pos_e[2] } })
+            local row = pos_s[1] + i - 1
+            local col_end = is_end and #fn.getline(row) or pos_e[2]
+            table.insert(pos, { row = row, col = { pos_s[2], col_end } })
         end
     end
 
