@@ -1,16 +1,12 @@
-let s:modes = ['command', 'parse', 'output', 'source']
+let s:modes = ['parse_before', 'command', 'parse_after', 'output', 'source']
 
 function! translate#complete(arglead, cmdline, cursorpos) abort
-    if a:arglead =~# '^-.*=' || a:arglead !~# '^-'
-        let l:modes = matchlist(a:arglead, '^-\(.*\)=')
-        if len(l:modes) == 0
-            let l:mode = 'target'
-        else
-            let l:mode = l:modes[1]
-        endif
-        let l:list = luaeval('require("translate.config").get_complete_list(_A[1], _A[2])', [l:mode, a:cmdline])
-        return l:list
+    if  a:arglead !~# '^-'
+		let l:mode = 'target'
+	elseif a:arglead =~# '^-.*='
+        let l:mode = matchlist(a:arglead, '^-\(.*\)=')[1]
     elseif a:arglead =~# '^-'
         return s:modes
     endif
+	return luaeval('require("translate.config").get_complete_list(_A[1], _A[2])', [l:mode, a:cmdline])
 endfunction

@@ -128,7 +128,7 @@ local function get_keys(mode)
 end
 
 function M.get_complete_list(mode, cmdline)
-    if vim.tbl_contains({ "command", "parse", "output" }, mode) then
+    if vim.tbl_contains({ "parse_before", "command", "parse_after", "output" }, mode) then
         return get_keys(mode)
     elseif vim.tbl_contains({ "source", "target" }, mode) then
         local command = cmdline:match("-command=(%S*)")
