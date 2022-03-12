@@ -1,11 +1,15 @@
 local api = vim.api
 local fn = vim.fn
 
+local comment = require("translate.util.comment")
+
 local M = {}
 local L = {}
 
 function M.get(args, is_visual)
-    if is_visual then
+    if args.comment then
+        return comment.get_range()
+    elseif is_visual then
         return L.get_visual_selected()
     else
         return L.get_current_line()
@@ -31,14 +35,10 @@ function L.get_visual_selected()
     if mode == "v" then
         for i, line in ipairs(lines) do
             local p = { row = pos_s[1] + i - 1, col = { 1, #line } }
-            if i == 1 then
-                p.col[1] = pos_s[2]
-            end
-            if i == #lines then
-                p.col[2] = pos_e[2]
-            end
             table.insert(pos, p)
         end
+        pos[1].col[1] = pos_s[2]
+        pos[#pos].col[2] = pos_e[2]
     elseif mode == "V" then
         for i, line in ipairs(lines) do
             table.insert(pos, { row = pos_s[1] + i - 1, col = { 1, #line } })

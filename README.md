@@ -136,4 +136,4 @@ xnoremap <silent> mer :Translate EN -parse_after=remove_newline,head -output=rep
 
 ## TODO
 
-- text select: If the comment is under the cursor, you can select the entire comment.
+- More natural line breaks for output/replace (if possible)

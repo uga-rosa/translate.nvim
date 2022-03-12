@@ -1,4 +1,4 @@
-let s:modes = ['parse_before', 'command', 'parse_after', 'output', 'source']
+let s:modes = ['parse_before', 'command', 'parse_after', 'output', 'source', 'comment']
 
 function! translate#complete(arglead, cmdline, cursorpos) abort
     if  a:arglead !~# '^-'

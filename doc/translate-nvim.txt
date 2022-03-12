@@ -70,19 +70,23 @@ Command							*translate-nvim-command*
 		- '-source='
 			The language of the text to be translated.
 		- '-parse_before='
-			The functions to format texts of selection.
-			You can use a comma-separated string.
-			If omitted, |translate-nvim-option-default-parse-before|.
+			The functions to format texts of selection. You can
+			use a comma-separated string. If omitted,
+			|translate-nvim-option-default-parse-before|.
 		- '-command='
 			The extermal command to use translation. If omitted,
 			|translate-nvim-option-default-command| is used.
 		- '-parse_after='
-			The functions to format the result of extermal command.
-			You can use a comma-separated string.
+			The functions to format the result of extermal
+			command. You can use a comma-separated string.
 			If omitted, |translate-nvim-option-default-parse-after|.
 		- '-output='
-			The function to pass the translation result.
-			If omitted, |translate-nvim-option-default-output|.
+			The function to pass the translation result. If
+			omitted, |translate-nvim-option-default-output|.
+		- '-comment'
+			Special option, used as a flag. If this flag is set
+			and the cursor is over a comment, whole comment is
+			treated as a selection.
 
 
 	If mapping |:Translate|, Do NOT use |<Cmd>|. I use [range] to check
