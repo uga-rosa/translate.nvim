@@ -1,7 +1,6 @@
 # translate.nvim
 
-![demo](https://user-images.githubusercontent.com/82267684/157377303-484f496e-2eed-482d-bb89-cabd011cf978.gif)
-
+![demo](https://user-images.githubusercontent.com/82267684/158013979-52c8ca49-84e1-4ca0-bf30-b8165cca9135.gif)
 
 # Features
 
