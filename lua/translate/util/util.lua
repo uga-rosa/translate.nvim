@@ -51,12 +51,15 @@ end
 
 function M.text_cut(text, widths)
     local widths_is_table = type(widths) == "table"
+    local function get_width(row)
+        return widths_is_table and widths[row] or widths
+    end
 
     local lines = {}
     local row, col = 1, 0
+    local width = get_width(1)
     for p, char in utf8.codes(text) do
         local l = api.nvim_strwidth(char)
-        local width = widths_is_table and widths[row] or widths
 
         if col + l > width then
             if widths_is_table and widths[row + 1] == nil then
@@ -67,6 +70,13 @@ function M.text_cut(text, widths)
 
             row = row + 1
             col = 0
+            width = get_width(row)
+            -- skip black line
+            while width == 0 do
+                M.append_dict_list(lines, row, "")
+                row = row + 1
+                width = get_width(row)
+            end
         end
 
         M.append_dict_list(lines, row, char)
