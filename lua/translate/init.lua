@@ -16,7 +16,7 @@ function M.translate(count, ...)
     local is_visual = count ~= 0
     local pos = select.get(args, is_visual)
 
-    if not pos then
+    if #pos == 0 then
         error("Selection could not be recognized.")
     end
 
