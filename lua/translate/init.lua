@@ -85,6 +85,12 @@ function M._translate(pos, cmd_args)
         stdio[2],
         vim.schedule_wrap(function(err, data)
             assert(not err, err)
+
+            handle:close()
+            stdio[1]:close()
+            stdio[2]:close()
+            stdio[3]:close()
+
             if data then
                 data = M._run(parse_after, data, pos)
                 output(data, pos)
