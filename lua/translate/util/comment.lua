@@ -7,15 +7,14 @@ local util = require("translate.util.util")
 local M = {}
 
 function M.get_range() -- example 2. (see below)
-    -- Common comments can be of the following types
+    -- Common comments can be of the following types.
     -- 1. The comment string repeats at the start of each line (e.g. this line)
     --    This may be strung together on multiple lines to form a single comment.
-    -- 2. Similar 1., but comments begin in the middle of the line (e.g. the comment four lines above)
-    -- 3. three-piece comment (e.g. c's '/*
-    --                                    * comment
-    --                                    */')
-    -- First, check to see if the current line is 1. by looking at the beginning of the line.
-    -- Since the only case in which it is necessary to recursively examine is in 1.
+    -- 2. Similar 1., but comments begin in the middle of the line (e.g. the comment four lines above).
+    -- 3. three-piece comment (e.g. c's '/* comment */').
+    --
+    -- First, check to see if the current line is 1. by looking at the beginning of the line
+    -- since the only case in which it is necessary to recursively examine is in 1.
     -- If not 1, then use highlighting or treesitter to take the range of comments.
     -- We have already established that it is either 2 or 3, so all that remains is to remove the comment sign.
 
@@ -190,12 +189,16 @@ function M.assert_pattern3(comments, range, pos)
         table.insert(pos, p)
     end
     pos[1].col[1] = range[2]
-    pos[#pos].col[2] = range[4]
+    pos[#pos].col[2] = math.min(pos[#pos].col[2], range[4])
 
     -- Remove start of three-piece
-    do
-        local selected = pos._lines[1]:sub(range[2])
-        local _, num_of_com = vim.regex("^" .. comments.s):match_str(selected)
+    local first_line = pos._lines[1]:sub(range[2])
+    if vim.regex("^" .. comments.s .. [[\s\*\$]]):match_str(first_line) then
+        -- This line is unnecessary because it is only a comment string
+        table.remove(pos, 1)
+        table.remove(pos._lines, 1)
+    else
+        local _, num_of_com = vim.regex("^" .. comments.s):match_str(first_line)
         if num_of_com then
             pos[1].col[1] = pos[1].col[1] + num_of_com
         else
@@ -216,9 +219,13 @@ function M.assert_pattern3(comments, range, pos)
     end
 
     -- Remove end of three-piece
-    do
-        local selected = pos._lines[#pos._lines]:sub(1, range[4])
-        local _, num_of_com = vim.regex(comments.e .. [[\$]]):match_str(selected)
+    local last_line = pos._lines[#pos._lines]:sub(1, range[4])
+    if vim.regex([[^\V\s\*]] .. comments.e .. [[\$]]):match_str(last_line) then
+        -- This line is unnecessary because it is only a comment string
+        table.remove(pos, #pos)
+        table.remove(pos._lines, #pos._lines)
+    else
+        local _, num_of_com = vim.regex(comments.e .. [[\$]]):match_str(last_line)
         if num_of_com then
             pos[#pos].col[2] = pos[#pos].col[2] - num_of_com
         else
