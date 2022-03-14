@@ -47,7 +47,7 @@ M.config = {
         },
         command = {
             translate_shell = {
-                args = { "-b", "-no-ansi" },
+                args = { "-b", "-no-ansi", "-no-autocorrect" },
             },
             deepl_free = {
                 args = {},
