@@ -15,8 +15,6 @@ function M.cmd(text, _)
 
     local lines = vim.split(text, crlf)
 
-    dump(lines)
-
     return lines
 end
 

@@ -9,7 +9,7 @@ function M.cmd(lines, pos, cmd_args)
     if cmd_args.source then
         local ends = M.get_end(cmd_args.source, option)
         if ends then
-            end_regex = vim.regex("\\V\\%(" .. table.concat(ends, "\\|") .. "\\)\\$")
+            end_regex = vim.regex([[\V\%(]] .. table.concat(ends, [[\|]]) .. [[\)\$]])
         end
     end
 
