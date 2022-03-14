@@ -11,6 +11,7 @@ M._preset = {
         deepl_pro = require("translate.preset.command.deepl_pro"),
     },
     parse_after = {
+        split_newline = require("translate.preset.parse_after.split_newline"),
         remove_newline = require("translate.preset.parse_after.remove_newline"),
         oneline = require("translate.preset.parse_after.oneline"),
         head = require("translate.preset.parse_after.head"),

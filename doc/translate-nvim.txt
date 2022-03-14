@@ -23,6 +23,7 @@ concat					|translate-nvim-preset-parse-before-concat|
   - deepl_free				|translate-nvim-preset-command-deepl-free|
   - deepl_pro				|translate-nvim-preset-command-deepl-pro|
 - parse_after				|translate-nvim-preset-parse-after|
+  - split_newline			|translate-nvim-preset-parse-after-split-newline|
   - remove_newline			|translate-nvim-preset-parse-after-remove-newline|
   - oneline				|translate-nvim-preset-parse-after-oneline|
   - head				|translate-nvim-preset-parse-after-head|
@@ -297,6 +298,7 @@ Options passed to the presets.
 
 
 			*translate-nvim-option-preset-parse-after-remove-newline*
+			*translate-nvim-option-preset-parse-after-split-by-crlf*
 			*translate-nvim-option-preset-parse-after-oneline*
 			*translate-nvim-option-preset-parse-after-head*
 			*translate-nvim-option-preset-parse-after-rate*
@@ -484,12 +486,21 @@ string that is eventually passed to the output. The second and subsequent
 functions receive the return value of the previous function.
 
 
+				*translate-nvim-preset-parse-after-split-newline*
+	split_newline ~
+
+	Separate by newline characters; if you added newline characters with
+	parse_before and it remains in the translation result, this will give
+	you a proper line break.
+
+
 				*translate-nvim-preset-parse-after-remove-newline*
 	remove_newline ~
 
 	Remove \r and \n. The reason for using this is that the text to be
 	inserted into the buffer is a line-by-line array, and an error will
 	occur if each element of the array contains a newline character.
+	If you don't use 'parse_after/split', you should use this.
 
 
 					*translate-nvim-preset-parse-after-oneline*
