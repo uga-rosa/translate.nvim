@@ -95,8 +95,8 @@ Command							*translate-nvim-command*
 	map them as follows.
 
 >
-	nnoremap mei :<C-u>Translate EN -parse_after=oneline -output=insert<CR>
-	xnoremap mer :Translate EN -parse_after=head -output=replace<CR>
+	nnoremap mei :<C-u>Translate EN -source=JA -output=insert<CR>
+	xnoremap mer :Translate EN -source=JA -output=replace<CR>
 <
 
 

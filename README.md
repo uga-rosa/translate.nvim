@@ -71,39 +71,43 @@ I put the quote from the help in the fold.
 
 
     :[range]Translate {target-lang} [{-options}...]
-    
-    	{target-lang}: Required. The language into which the text should be
-    	translated. The format varies depending on the external command used.
-    
-    	|:Translate| can take |:range|. |v|, |V| and |CTRL-V| are supported. If it was
-    	not given, |:Translate| treats current cursor line.
-    
-    	available options:
-    		- '-source='
-    			The language of the text to be translated.
-    		- '-parse_before='
-    			The functions to format texts of selection.
-    			You can use a comma-separated string.
-    			If omitted, |translate-nvim-option-default-parse-before|.
-    		- '-command='
-    			The extermal command to use translation. If omitted,
-    			|translate-nvim-option-default-command| is used.
-    		- '-parse_after='
-    			The functions to format the result of extermal command.
-    			You can use a comma-separated string.
-    			If omitted, |translate-nvim-option-default-parse-after|.
-    		- '-output='
-    			The function to pass the translation result.
-    			If omitted, |translate-nvim-option-default-output|.
-    
-    
-    	If mapping |:Translate|, Do NOT use |<Cmd>|. I use [range] to check
-    	whether this command is called from normal mode or visual mode. Please
-    	map them as follows.
-    
 
-    	nnoremap mei :<C-u>Translate EN -parse_after=oneline -output=insert<CR>
-    	xnoremap mer :Translate EN -parse_after=head -output=replace<CR>
+        {target-lang}: Required. The language into which the text should be
+        translated. The format varies depending on the external command used.
+
+        |:Translate| can take |:range|. |v|, |V| and |CTRL-V| are supported. If it was
+        not given, |:Translate| treats current cursor line.
+
+        available options:
+            - '-source='
+                The language of the text to be translated.
+            - '-parse_before='
+                The functions to format texts of selection. You can
+                use a comma-separated string. If omitted,
+                |translate-nvim-option-default-parse-before|.
+            - '-command='
+                The extermal command to use translation. If omitted,
+                |translate-nvim-option-default-command| is used.
+            - '-parse_after='
+                The functions to format the result of extermal
+                command. You can use a comma-separated string.
+                If omitted, |translate-nvim-option-default-parse-after|.
+            - '-output='
+                The function to pass the translation result. If
+                omitted, |translate-nvim-option-default-output|.
+            - '-comment'
+                Special option, used as a flag. If this flag is set
+                and the cursor is over a comment, whole comment is
+                treated as a selection.
+
+
+        If mapping |:Translate|, Do NOT use |<Cmd>|. I use [range] to check
+        whether this command is called from normal mode or visual mode. Please
+        map them as follows.
+
+
+        nnoremap mei :<C-u>Translate EN -source=JA -output=insert<CR>
+        xnoremap mer :Translate EN -source=JA -output=replace<CR>
 
 
 </div></details>
@@ -115,25 +119,22 @@ As noted in the help, do not use `<Cmd>` when mapping the :Translate command.
 This is my setting.
 
 ```vim
-nnoremap <silent> mjf :<C-u>Translate JA -parse_after=remove_newline,window -output=floating<CR>
-xnoremap <silent> mjf :Translate JA -parse_after=remove_newline,window -output=floating<CR>
-nnoremap <silent> mjs :<C-u>Translate JA -parse_after=remove_newline,oneline -output=split<CR>
-xnoremap <silent> mjs :Translate JA -parse_after=remove_newline,oneline -output=split<CR>
-nnoremap <silent> mji :<C-u>Translate JA -parse_after=remove_newline,head -output=insert<CR>
-xnoremap <silent> mji :Translate JA -parse_after=remove_newline,head -output=insert<CR>
-nnoremap <silent> mjr :<C-u>Translate JA -parse_after=remove_newline,head -output=replace<CR>
-xnoremap <silent> mjr :Translate JA -parse_after=remove_newline,head -output=replace<CR>
+xnoremap <silent> mjf :Translate JA -source=EN -parse_after=window -output=floating<CR>
+nnoremap <silent> mjs :<C-u>Translate JA -source=EN -output=split<CR>
+xnoremap <silent> mjs :Translate JA -source=EN -output=split<CR>
+nnoremap <silent> mji :<C-u>Translate JA -source=EN -output=insert<CR>
+xnoremap <silent> mji :Translate JA -source=EN -output=insert<CR>
+nnoremap <silent> mjr :<C-u>Translate JA -source=EN -output=replace<CR>
+xnoremap <silent> mjr :Translate JA -source=EN -output=replace<CR>
 
-nnoremap <silent> mef :<C-u>Translate EN -parse_after=remove_newline,window -output=floating<CR>
-xnoremap <silent> mef :Translate EN -parse_after=remove_newline,window -output=floating<CR>
-nnoremap <silent> mes :<C-u>Translate EN -parse_after=remove_newline,oneline -output=split<CR>
-xnoremap <silent> mes :Translate EN -parse_after=remove_newline,oneline -output=split<CR>
-nnoremap <silent> mei :<C-u>Translate EN -parse_after=remove_newline,head -output=insert<CR>
-xnoremap <silent> mei :Translate EN -parse_after=remove_newline,head -output=insert<CR>
-nnoremap <silent> mer :<C-u>Translate EN -parse_after=remove_newline,head -output=replace<CR>
-xnoremap <silent> mer :Translate EN -parse_after=remove_newline,head -output=replace<CR>
+nnoremap <silent> mef :<C-u>Translate EN -source=JA -parse_after=window -output=floating<CR>
+xnoremap <silent> mef :Translate EN -source=JA -parse_after=window -output=floating<CR>
+nnoremap <silent> mes :<C-u>Translate EN -source=JA -output=split<CR>
+xnoremap <silent> mes :Translate EN -source=JA -output=split<CR>
+nnoremap <silent> mei :<C-u>Translate EN -source=JA -output=insert<CR>
+xnoremap <silent> mei :Translate EN -source=JA -output=insert<CR>
+nnoremap <silent> mer :<C-u>Translate EN -source=JA -output=replace<CR>
+xnoremap <silent> mer :Translate EN -source=JA -output=replace<CR>
 ```
 
 ## TODO
-
-- More natural line breaks for output/replace (if possible)
