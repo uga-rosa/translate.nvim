@@ -61,7 +61,7 @@ function M._translate(pos, cmd_args)
 
     local lines = M._selection(pos)
 
-    local text = M._run(parse_before, lines)
+    local text = M._run(parse_before, lines, pos, cmd_args)
 
     local cmd, args = command(text, cmd_args)
     local stdio = pipes()
@@ -103,9 +103,9 @@ function M._selection(pos)
     return lines
 end
 
-function M._run(functions, arg, pos)
+function M._run(functions, arg, pos, cmd_args)
     for _, func in ipairs(functions) do
-        arg = func(arg, pos)
+        arg = func(arg, pos, cmd_args)
     end
     return arg
 end
