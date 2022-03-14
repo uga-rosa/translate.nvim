@@ -51,6 +51,10 @@ M.lang_abbr = {
     eng = "english",
     ja = "japanese",
     jpn = "japanese",
+    zh = "chinese",
+    zho = "chinese",
+    ["zh-CN"] = "chinese",
+    ["zh-TW"] = "chinese",
 }
 
 -- vim's regex pattern (vary no magic '\V')
@@ -67,6 +71,12 @@ M.end_sentence = {
         "?",
         "！",
         "!",
+    },
+    chinese = {
+        "。",
+        "！",
+        "？",
+        "：",
     },
 }
 
