@@ -2,8 +2,9 @@ local M = {}
 
 M._preset = {
     parse_before = {
-        concat = require("translate.preset.parse_before.concat"),
+        natural = require("translate.preset.parse_before.natural"),
         trim = require("translate.preset.parse_before.trim"),
+        concat = require("translate.preset.parse_before.concat"),
     },
     command = {
         translate_shell = require("translate.preset.command.translate_shell"),
@@ -11,12 +12,11 @@ M._preset = {
         deepl_pro = require("translate.preset.command.deepl_pro"),
     },
     parse_after = {
-        split_newline = require("translate.preset.parse_after.split_newline"),
-        remove_newline = require("translate.preset.parse_after.remove_newline"),
         oneline = require("translate.preset.parse_after.oneline"),
         head = require("translate.preset.parse_after.head"),
         rate = require("translate.preset.parse_after.rate"),
         window = require("translate.preset.parse_after.window"),
+        translate_shell = require("translate.preset.parse_after.translate_shell"),
         deepl = require("translate.preset.parse_after.deepl"),
     },
     output = {
@@ -30,9 +30,9 @@ M._preset = {
 
 M.config = {
     default = {
-        parse_before = "trim,concat",
+        parse_before = "trim,natural",
         command = "translate_shell",
-        parse_after = "remove_newline,window",
+        parse_after = "head",
         output = "floating",
     },
     parse_before = {},
@@ -41,13 +41,17 @@ M.config = {
     output = {},
     preset = {
         parse_before = {
+            natural = {
+                lang_abbr = {},
+                end_sentence = {},
+            },
             concat = {
                 sep = " ",
             },
         },
         command = {
             translate_shell = {
-                args = { "-b", "-no-ansi", "-no-autocorrect" },
+                args = {},
             },
             deepl_free = {
                 args = {},
@@ -70,8 +74,10 @@ M.config = {
                 border = "single",
             },
             split = {
+                position = "top",
+                min_size = 3,
+                max_size = 0.3,
                 name = "translate://output",
-                cmd = "topleft 5sp",
                 filetype = "translate",
                 append = false,
             },

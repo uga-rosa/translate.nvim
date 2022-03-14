@@ -1,5 +1,6 @@
-local util = require "translate.util.util"
 local api = vim.api
+
+local util = require "translate.util.util"
 
 local M = {}
 
@@ -27,10 +28,10 @@ function M.cmd(lines, pos)
     end
 
     if mode == "n" or (mode == "v" and #lines > 1) or mode == "V" then
-        local indents = util.indent(pos)
+        local indent = util.indent(pos)
         local start_line = mode == "v" and 2 or 1
         for i = start_line, #lines do
-            lines[i] = indents[i] .. lines[i]
+            lines[i] = indent .. lines[i]
         end
     end
 
