@@ -34,14 +34,16 @@ function L.get_visual_selected()
 
     if mode == "v" then
         for i, line in ipairs(lines) do
-            local p = { row = pos_s[1] + i - 1, col = { 1, #line } }
+            local indent = line:match("^%s*")
+            local p = { row = pos_s[1] + i - 1, col = { #indent + 1, #line } }
             table.insert(pos, p)
         end
         pos[1].col[1] = pos_s[2]
         pos[#pos].col[2] = pos_e[2]
     elseif mode == "V" then
         for i, line in ipairs(lines) do
-            table.insert(pos, { row = pos_s[1] + i - 1, col = { 1, #line } })
+            local indent = line:match("^%s*")
+            table.insert(pos, { row = pos_s[1] + i - 1, col = { #indent + 1, #line } })
         end
     elseif mode == "" then
         local last_line = fn.getline(pos_e[1])
@@ -60,7 +62,8 @@ end
 function L.get_current_line()
     local row = fn.line(".")
     local line = api.nvim_get_current_line()
-    local pos = { { row = row, col = { 1, #line } } }
+    local indent = line:match("^%s*")
+    local pos = { { row = row, col = { #indent + 1, #line } } }
     pos._lines = { line }
     pos._mode = "n"
     return pos
