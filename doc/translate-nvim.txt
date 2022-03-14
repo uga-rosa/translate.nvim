@@ -477,7 +477,7 @@ previous function.
 	Separates selection with a blank line or when the end of a line is the
 	end of a sentence. To use it, pass the 'source' option to the command
 	and tell it the original language. By default, this grammar rule is
-	defined only for Japanese and English.
+	defined only for English, Japanese and Chinese.
 
 
 				*translate-nvim-preset-parse-before-trim*
