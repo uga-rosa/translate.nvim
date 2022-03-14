@@ -55,13 +55,17 @@ function M._translate(pos, cmd_args)
     local output = config.get_func("output", cmd_args.output)
 
     if vim.tbl_contains({ "deepl_pro", "deepl_free" }, command_name) and parse_after_name[1] ~= "deepl" then
-        local parse_deepl = require("translate.preset.parse_after.deepl").cmd
+        local parse_deepl = config._preset.parse_after.deepl.cmd
         table.insert(parse_after, 1, parse_deepl)
+    elseif command_name == "translate_shell" and parse_after_name[1] ~= "translate_shell" then
+        local translate_shell = config._preset.parse_after.translate_shell.cmd
+        table.insert(parse_after, 1, translate_shell)
     end
 
     local lines = M._selection(pos)
+    pos._lines_selected = lines
 
-    local text = M._run(parse_before, lines)
+    local text = M._run(parse_before, lines, pos, cmd_args)
 
     local cmd, args = command(text, cmd_args)
     local stdio = pipes()
@@ -75,6 +79,7 @@ function M._translate(pos, cmd_args)
                 print("Translate failed")
             end
         end
+        handle:close()
     end)
 
     if not handle then
@@ -86,7 +91,6 @@ function M._translate(pos, cmd_args)
         vim.schedule_wrap(function(err, data)
             assert(not err, err)
 
-            handle:close()
             stdio[1]:close()
             stdio[2]:close()
             stdio[3]:close()
@@ -108,9 +112,9 @@ function M._selection(pos)
     return lines
 end
 
-function M._run(functions, arg, pos)
+function M._run(functions, arg, pos, cmd_args)
     for _, func in ipairs(functions) do
-        arg = func(arg, pos)
+        arg = func(arg, pos, cmd_args)
     end
     return arg
 end

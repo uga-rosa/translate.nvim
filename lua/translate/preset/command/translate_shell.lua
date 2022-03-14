@@ -1,19 +1,32 @@
 local M = {}
 
+---@param text string|string[]
+---@param command_args table
+---@return string
+---@return table
 function M.cmd(text, command_args)
+    if type(text) == "table" then
+        text = table.concat(text, "\n")
+    end
+
     local source = command_args.source or ""
     local target = command_args.target
 
     local options = require("translate.config").get("preset").command.translate_shell
 
     local cmd = "trans"
-    local args = {}
+    local args = {
+        "-b",
+        "-no-ansi",
+        "-no-autocorrect"
+    }
 
     if #options.args then
         args = vim.list_extend(args, options.args)
     end
 
-    args = vim.list_extend(args, { source .. ":" .. target, text })
+    table.insert(args, source .. ":" .. target)
+    table.insert(args, text)
 
     return cmd, args
 end

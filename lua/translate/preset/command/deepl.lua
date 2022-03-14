@@ -8,6 +8,10 @@ function M.make_command(name)
         url = "https://api-free.deepl.com/v2/translate"
     end
 
+    ---@param text string|string[]
+    ---@param command_args table
+    ---@return string
+    ---@return table
     return function(text, command_args)
         if not vim.g.deepl_api_auth_key then
             error("[translate.nvim] Set your DeepL API authorization key to g:deepl_api_auth_key.")
@@ -24,10 +28,14 @@ function M.make_command(name)
             "-d",
             "auth_key=" .. vim.g.deepl_api_auth_key,
             "-d",
-            "text=" .. text,
-            "-d",
             "target_lang=" .. command_args.target,
         }
+
+        text = type(text) == "table" and text or { text }
+        for _, t in ipairs(text) do
+            table.insert(args, "-d")
+            table.insert(args, "text=" .. t)
+        end
 
         if command_args.source then
             table.insert(args, "-d")

@@ -59,7 +59,7 @@ function M.text_cut(text, widths)
     local row, col = 1, 0
     local width = get_width(1)
 
-    local function skip_black_line()
+    local function skip_blank_line()
         while width == 0 do
             M.append_dict_list(lines, row, "")
             row = row + 1
@@ -67,7 +67,7 @@ function M.text_cut(text, widths)
         end
     end
 
-    skip_black_line()
+    skip_blank_line()
 
     for p, char in utf8.codes(text) do
         local l = api.nvim_strwidth(char)
@@ -83,7 +83,7 @@ function M.text_cut(text, widths)
             width = get_width(row)
             col = 0
 
-            skip_black_line()
+            skip_blank_line()
         end
 
         M.append_dict_list(lines, row, char)
@@ -92,6 +92,10 @@ function M.text_cut(text, widths)
 
     for i, line in ipairs(lines) do
         lines[i] = table.concat(line, "")
+    end
+
+    if #lines == 0 then
+        lines = { "" }
     end
 
     return lines
@@ -109,12 +113,7 @@ function M.max_width_in_string_list(list)
 end
 
 function M.indent(pos)
-    local indents = {}
-    for _, line in ipairs(pos._lines) do
-        local indent = line:match("^%s*")
-        table.insert(indents, indent)
-    end
-    return indents
+    return pos._lines[1]:match("^%s*")
 end
 
 function M.has_key(tbl, ...)
@@ -125,6 +124,14 @@ function M.has_key(tbl, ...)
         end
     end
     return true
+end
+
+function M.seq(start, last, step)
+    local l = {}
+    for i = start, last, step do
+        table.insert(l, i)
+    end
+    return l
 end
 
 return M
