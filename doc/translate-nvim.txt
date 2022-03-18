@@ -192,14 +192,16 @@ Options passed to the presets.
 		table
 		defalut: {
 		    lang_abbr = {},
-		    end_sentence = {},
+		    end_marks = {},
+		    start_marks = {},
 		}
 
 		Table 'lang_abbr' for converting the '-source' option of the
-		command to the language, and list 'end_sentence' of the
-		end-of-sentence character pattern (vim regular expression,
-		|/\V|). Use lowercase for language names and their
-		abbreviations.
+		command to the language, list 'end_marks' of the
+		end-of-sentence characters pattern (vim regular expression,
+		|/\V|), and list 'start_marks' of the start-of-sentence
+		characters pattern (same 'end_marks'). Use lowercase for
+		language names and their abbreviations.
 
 		For example, in English, which is defined by default.
 
@@ -209,18 +211,21 @@ Options passed to the presets.
 			en = "english",
 			eng = "english",
 		    },
-		    end_sentence = {
+		    end_marks = {
 			english = {
 			    ".",
 			    "?",
 			    "!",
+			    ":",
+			    ";",
 			},
 		    },
 		}
 <
 
-		Only 'english' and 'japanese' have rules defined by default. Other
-		languages can be defined by yourself or we welcome PRs.
+		Only 'english', 'japanese', and 'chinese' have rules defined
+		by default. Other languages can be defined by yourself or PRs
+		are welcome!
 
 
 				*translate-nvim-option-preset-parse-before-trim*
@@ -476,10 +481,10 @@ previous function.
 				*translate-nvim-preset-parse-before-natural*
 	natural ~
 
-	Separates selection with a blank line or when the end of a line is the
-	end of a sentence. To use it, pass the 'source' option to the command
-	and tell it the original language. By default, this grammar rule is
-	defined only for English, Japanese and Chinese.
+	Separates selection with a blank line or when the start/end of a line
+	is the start/end of a sentence. To use it, pass the 'source' option to
+	the command and tell it the original language. By default, this
+	grammar rule is defined only for English, Japanese and Chinese.
 
 
 				*translate-nvim-preset-parse-before-trim*
