@@ -45,7 +45,8 @@ M.config = {
         parse_before = {
             natural = {
                 lang_abbr = {},
-                end_sentence = {},
+                end_marks = {},
+                start_marks = {},
             },
             concat = {
                 sep = " ",
