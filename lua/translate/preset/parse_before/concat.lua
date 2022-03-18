@@ -2,7 +2,7 @@ local util = require("translate.util.util")
 
 local M = {}
 
-function M.cmd(lines, pos)
+function M.cmd(lines, pos, _)
     pos._group = { util.seq(1, #lines) }
 
     local options = require("translate.config").get("preset").parse_before.concat

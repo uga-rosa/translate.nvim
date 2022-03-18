@@ -1,6 +1,6 @@
 local M = {}
 
-function M.cmd(lines, pos)
+function M.cmd(lines, pos, _)
     for i, line in ipairs(lines) do
         local pre = line:match("^%s*")
         if pre then
