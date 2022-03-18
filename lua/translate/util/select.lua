@@ -2,6 +2,7 @@ local api = vim.api
 local fn = vim.fn
 
 local comment = require("translate.util.comment")
+local utf8 = require("translate.util.utf8")
 
 local M = {}
 local L = {}
@@ -32,27 +33,35 @@ function L.get_visual_selected()
     pos._lines = lines
     pos._mode = mode
 
-    if mode == "v" then
+    if mode == "V" then
         for i, line in ipairs(lines) do
-            local indent = line:match("^%s*")
-            local p = { row = pos_s[1] + i - 1, col = { #indent + 1, #line } }
-            table.insert(pos, p)
+            table.insert(pos, { row = pos_s[1] + i - 1, col = { 1, #line } })
         end
-        pos[1].col[1] = pos_s[2]
-        pos[#pos].col[2] = pos_e[2]
-    elseif mode == "V" then
-        for i, line in ipairs(lines) do
-            local indent = line:match("^%s*")
-            table.insert(pos, { row = pos_s[1] + i - 1, col = { #indent + 1, #line } })
-        end
-    elseif mode == "" then
+    else
         local last_line = fn.getline(pos_e[1])
-        local is_end = pos_e[2] > #last_line -- Selected to the end of each line.
+        local is_end = pos_e[2] == #last_line + 1 -- Selected to the end of each line.
+        if not is_end then
+            local offset = utf8.offset(last_line, 2, pos_e[2])
+            if offset then
+                pos_e[2] = offset - 1
+            else -- The last character of the line.
+                pos_e[2] = #last_line
+            end
+        end
 
-        for i, _ in ipairs(lines) do
-            local row = pos_s[1] + i - 1
-            local col_end = is_end and #fn.getline(row) or pos_e[2]
-            table.insert(pos, { row = row, col = { pos_s[2], col_end } })
+        if mode == "v" then
+            for i, line in ipairs(lines) do
+                local p = { row = pos_s[1] + i - 1, col = { 1, #line } }
+                table.insert(pos, p)
+            end
+            pos[1].col[1] = pos_s[2]
+            pos[#pos].col[2] = pos_e[2]
+        elseif mode == "" then
+            for i, _ in ipairs(lines) do
+                local row = pos_s[1] + i - 1
+                local col_end = is_end and #fn.getline(row) or pos_e[2]
+                table.insert(pos, { row = row, col = { pos_s[2], col_end } })
+            end
         end
     end
 
@@ -62,8 +71,7 @@ end
 function L.get_current_line()
     local row = fn.line(".")
     local line = api.nvim_get_current_line()
-    local indent = line:match("^%s*")
-    local pos = { { row = row, col = { #indent + 1, #line } } }
+    local pos = { { row = row, col = { 1, #line } } }
     pos._lines = { line }
     pos._mode = "n"
     return pos

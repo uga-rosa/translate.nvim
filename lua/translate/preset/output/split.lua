@@ -3,9 +3,18 @@ local api = vim.api
 
 local M = {}
 
-function M.cmd(lines, _)
+function M.cmd(lines, pos)
     if type(lines) == "string" then
         lines = { lines }
+    end
+
+    local lines_origin = pos._lines
+
+    -- Remain indentation
+    for i, line in ipairs(lines) do
+        local p = pos[i]
+        local indent = string.rep(" ", #lines_origin[i]:sub(1, p.col[1] - 1))
+        lines[i] = indent .. line
     end
 
     local option = require("translate.config").get("preset").output.split

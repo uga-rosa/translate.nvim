@@ -112,10 +112,6 @@ function M.max_width_in_string_list(list)
     return max
 end
 
-function M.indent(pos)
-    return pos._lines[1]:match("^%s*")
-end
-
 function M.has_key(tbl, ...)
     local keys = { ... }
     for _, k in ipairs(keys) do

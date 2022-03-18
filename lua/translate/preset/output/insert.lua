@@ -1,7 +1,5 @@
 local api = vim.api
 
-local util = require "translate.util.util"
-
 local M = {}
 
 function M.cmd(lines, pos)
@@ -9,18 +7,12 @@ function M.cmd(lines, pos)
         lines = { lines }
     end
 
-    local mode = pos._mode
-    local indent = util.indent(pos)
-    if mode == "n" or mode == "V" then
-        for i = 1, #lines do
-            lines[i] = indent .. lines[i]
-        end
-    elseif mode == "v" then
-        local firstline_indent = indent .. string.rep(" ", #pos._lines[1]:sub(#indent + 1, pos[1].col[1] - 1))
-        lines[1] = firstline_indent .. lines[1]
-        for i = 2, #lines do
-            lines[i] = indent .. lines[i]
-        end
+    local lines_origin = pos._lines
+
+    for i, line in ipairs(lines) do
+        local p = pos[i]
+        local indent = string.rep(" ", #lines_origin[i]:sub(1, p.col[1] - 1))
+        lines[i] = indent .. line
     end
 
     local options = require("translate.config").get("preset").output.insert
