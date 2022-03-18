@@ -8,7 +8,7 @@ local M = {}
 
 function M.get_range() -- example 2. (see below)
     -- Common comments can be of the following types.
-    -- 1. The comment string repeats at the start of each line (e.g. this line)
+    -- 1. The comment string repeats at the start of each line (e.g. this line).
     --    This may be strung together on multiple lines to form a single comment.
     -- 2. Similar 1., but comments begin in the middle of the line (e.g. the comment four lines above).
     -- 3. three-piece comment (e.g. c's '/* comment */').
