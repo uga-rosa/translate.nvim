@@ -5,6 +5,7 @@ M._preset = {
         natural = require("translate.preset.parse_before.natural"),
         trim = require("translate.preset.parse_before.trim"),
         concat = require("translate.preset.parse_before.concat"),
+        no_handle = require("translate.preset.parse_before.no_handle"),
     },
     command = {
         translate_shell = require("translate.preset.command.translate_shell"),
@@ -16,6 +17,7 @@ M._preset = {
         head = require("translate.preset.parse_after.head"),
         rate = require("translate.preset.parse_after.rate"),
         window = require("translate.preset.parse_after.window"),
+        no_handle = require("translate.preset.parse_after.no_handle"),
         translate_shell = require("translate.preset.parse_after.translate_shell"),
         deepl = require("translate.preset.parse_after.deepl"),
     },

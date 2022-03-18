@@ -19,6 +19,7 @@ preset					|translate-nvim-preset|
   - natural				|translate-nvim-preset-parse-before-natural|
   - trim				|translate-nvim-preset-parse-before-trim|
   - concat				|translate-nvim-preset-parse-before-concat|
+  - no_handle				|translate-nvim-preset-parse-before-no-handle|
 - command				|translate-nvim-preset-command|
   - translate_shell			|translate-nvim-preset-command-translate-shell|
   - deepl_free				|translate-nvim-preset-command-deepl-free|
@@ -28,6 +29,7 @@ preset					|translate-nvim-preset|
   - head				|translate-nvim-preset-parse-after-head|
   - rate				|translate-nvim-preset-parse-after-rate|
   - window				|translate-nvim-preset-parse-after-window|
+  - no_handle				|translate-nvim-preset-parse-after-no-handle|
   - translate_shell			|translate-nvim-preset-parse-after-translate-shell|
   - deepl				|translate-nvim-preset-parse-after-deepl|
 - output				|translate-nvim-preset-output|
@@ -494,6 +496,12 @@ previous function.
 	|translate-nvim-option-preset-parse-before-concat|.
 
 
+					*translate-nvim-preset-parse-after-no-handle*
+	no_handle ~
+
+	If you don't want to adjust anything, use this.
+
+
 						*translate-nvim-preset-command*
 command ~
 
@@ -576,6 +584,12 @@ functions receive the return value of the previous function.
 
 	It is intended to be used with 'split', 'insert', 'replace', and
 	'window'.
+
+
+					*translate-nvim-preset-parse-after-no-handle*
+	no_handle ~
+
+	If you don't want to adjust anything, use this.
 
 
 				*translate-nvim-preset-parse-after-translate-shell*
