@@ -142,7 +142,7 @@ See |translate-nvim-preset|, to check the presets provided by |translate-nvim|.
 	parse_before ~
 
 	string
-	default: 'trim,concat'
+	default: 'trim,natural'
 	
 	See |translate-nvim-preset-parse-before-trim| and
 	|translate-nvim-preset-parse-before-concat|.
@@ -161,7 +161,7 @@ See |translate-nvim-preset|, to check the presets provided by |translate-nvim|.
 	parse_after ~
 
 	string
-	default: 'remove_newline,floating'
+	default: 'head'
 	
 	See |translate-nvim-preset-parse-after-remove-newline| and
 	|translate-nvim-preset-parse-after-floating|.
