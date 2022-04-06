@@ -129,7 +129,7 @@ function M.get_funcs(mode, names)
     return modules, names
 end
 
--- For complete of command ':Translate'
+-- For completion of command ':Translate'
 
 local function get_keys(mode)
     local keys = vim.tbl_keys(M.config[mode])
