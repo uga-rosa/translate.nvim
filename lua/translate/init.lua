@@ -48,18 +48,22 @@ local function pipes()
     return { stdin, stdout, stderr }
 end
 
+local function set_to_top(tbl, elem)
+    if tbl[1] ~= elem then
+        table.insert(tbl, 1, elem)
+    end
+end
+
 function M._translate(pos, cmd_args)
     local parse_before = config.get_funcs("parse_before", cmd_args.parse_before)
     local command, command_name = config.get_func("command", cmd_args.command)
-    local parse_after, parse_after_name = config.get_funcs("parse_after", cmd_args.parse_after)
+    local parse_after = config.get_funcs("parse_after", cmd_args.parse_after)
     local output = config.get_func("output", cmd_args.output)
 
-    if vim.tbl_contains({ "deepl_pro", "deepl_free" }, command_name) and parse_after_name[1] ~= "deepl" then
-        local parse_deepl = config._preset.parse_after.deepl.cmd
-        table.insert(parse_after, 1, parse_deepl)
-    elseif command_name == "translate_shell" and parse_after_name[1] ~= "translate_shell" then
-        local translate_shell = config._preset.parse_after.translate_shell.cmd
-        table.insert(parse_after, 1, translate_shell)
+    if command_name == "deepl_pro" or command_name == "deepl_free" then
+        set_to_top(parse_after, config._preset.parse_after.deepl.cmd)
+    elseif command_name == "translate_shell" then
+        set_to_top(parse_after, config._preset.parse_after.translate_shell.cmd)
     end
 
     local lines = M._selection(pos)
