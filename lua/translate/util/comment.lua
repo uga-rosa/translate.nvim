@@ -225,8 +225,9 @@ function M.assert_pattern3(comments, range, pos)
         table.remove(pos, #pos)
         table.remove(pos._lines, #pos._lines)
     else
-        local _, num_of_com = vim.regex(comments.e .. [[\$]]):match_str(last_line)
-        if num_of_com then
+        local comStart, comEnd = vim.regex(comments.e .. [[\$]]):match_str(last_line)
+        if comStart then
+            local num_of_com = comEnd - comStart
             pos[#pos].col[2] = pos[#pos].col[2] - num_of_com
         else
             error("The end of three-piece can't found")
