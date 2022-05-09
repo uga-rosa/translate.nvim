@@ -11,6 +11,7 @@ M._preset = {
         translate_shell = require("translate.preset.command.translate_shell"),
         deepl_free = require("translate.preset.command.deepl_free"),
         deepl_pro = require("translate.preset.command.deepl_pro"),
+        google = require("translate.preset.command.google"),
     },
     parse_after = {
         oneline = require("translate.preset.parse_after.oneline"),
@@ -20,6 +21,7 @@ M._preset = {
         no_handle = require("translate.preset.parse_after.no_handle"),
         translate_shell = require("translate.preset.parse_after.translate_shell"),
         deepl = require("translate.preset.parse_after.deepl"),
+        google = require("translate.preset.parse_after.google"),
     },
     output = {
         floating = require("translate.preset.output.floating"),

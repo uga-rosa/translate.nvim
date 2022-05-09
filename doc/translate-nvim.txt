@@ -21,6 +21,7 @@ preset					|translate-nvim-preset|
   - concat				|translate-nvim-preset-parse-before-concat|
   - no_handle				|translate-nvim-preset-parse-before-no-handle|
 - command				|translate-nvim-preset-command|
+  - google				|translate-nvim-preset-command-google|
   - translate_shell			|translate-nvim-preset-command-translate-shell|
   - deepl_free				|translate-nvim-preset-command-deepl-free|
   - deepl_pro				|translate-nvim-preset-command-deepl-pro|
@@ -54,7 +55,14 @@ It provides |:Translate| for it.
 
 
 Requirement:
-  - neovim 0.5.0+
+  - neovim >= 0.6 (vim.json)
+  - curl (for |translate-nvim-preset-command-google|,
+    |translate-nvim-preset-command-deepl-free|, and
+    |translate-nvim-preset-command-deepl-pro|)
+  - DeepL API authorization key (for
+    |translate-nvim-preset-command-deepl-free| and
+    |translate-nvim-preset-command-deepl-pro|)
+  - trans (for |translate-nvim-preset-command-translate-shell|)
 
 
 ==============================================================================
@@ -152,9 +160,9 @@ See |translate-nvim-preset|, to check the presets provided by |translate-nvim|.
 	command ~
 
 	string
-	default: 'translate_shell'
+	default: 'google'
 
-	See |translate-nvim-preset-command-translate-shell|.
+	See |translate-nvim-preset-command-google|.
 	
 
 				*translate-nvim-option-default-parse-after*
@@ -247,6 +255,14 @@ Options passed to the presets.
 
 					*translate-nvim-option-preset-command*
 	command ~
+
+
+				*translate-nvim-option-preset-command-google*
+		google ~
+
+		nil
+
+		There are currently no options for this.
 
 
 			*translate-nvim-option-preset-command-translate-shell*
@@ -510,13 +526,23 @@ previous function.
 						*translate-nvim-preset-command*
 command ~
 
-External commands used for translation.
+API/External commands used for translation.
+'curl' is required except for translate_shell.
+<https://curl.se/>
+
+
+					*translate-nvim-preset-command-google*
+	google ~
+
+	Use Google Translate API via GAS.
+	There is nothing for you to prepare.
 
 
 				*translate-nvim-preset-command-translate-shell*
 	translate_shell ~
 
 	Use translate-shell.
+	You need to install 'trans' command.
 	<https://github.com/soimort/translate-shell>
 
 
@@ -527,9 +553,6 @@ External commands used for translation.
 	<https://www.deepl.com/en/docs-api/>
 
 	Set your DeepL API authorization key to |g:deepl_api_auth_key|.
-
-	'curl' command is required.
-	<https://curl.se/>
 
 
 				*translate-nvim-preset-command-deepl-pro*

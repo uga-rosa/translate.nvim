@@ -64,6 +64,8 @@ function M._translate(pos, cmd_args)
         set_to_top(parse_after, config._preset.parse_after.deepl.cmd)
     elseif command_name == "translate_shell" then
         set_to_top(parse_after, config._preset.parse_after.translate_shell.cmd)
+    elseif command_name == "google" then
+        set_to_top(parse_after, config._preset.parse_after.google.cmd)
     end
 
     local lines = M._selection(pos)
@@ -96,6 +98,7 @@ function M._translate(pos, cmd_args)
             assert(not err, err)
 
             if data then
+                dump(data)
                 data = M._run(parse_after, data, pos)
                 output(data, pos)
             end
