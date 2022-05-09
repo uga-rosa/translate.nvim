@@ -98,7 +98,6 @@ function M._translate(pos, cmd_args)
             assert(not err, err)
 
             if data then
-                dump(data)
                 data = M._run(parse_after, data, pos)
                 output(data, pos)
             end
