@@ -7,6 +7,7 @@ WIP: Available, but still incomplete in some features and subject to destructive
 # Features
 
 - You can use any command you like for translation.
+    - Google translate API (default)
     - [translate-shell](https://github.com/soimort/translate-shell)
     - [DeepL API Pro/Free](https://www.deepl.com/en/docs-api/)
 - The results of the translation can be output in a variety of ways.
@@ -21,12 +22,14 @@ WIP: Available, but still incomplete in some features and subject to destructive
 
 # Requirements
 
-- neovim 0.5.0+
+- neovim >= 0.6
+
+The default Google Translate requires nothing but [curl](https://curl.se/).
 
 If you use [translate-shell](https://github.com/soimort/translate-shell), you need to install `trans` command.
 
 If you use [DeepL API Pro/Free](https://www.deepl.com/en/docs-api/), you need the authorization key for DeepL API Pro/Free.
-In addition, you need [curl](https://curl.se/) to send the request.
+In addition, you need curl to send the request.
 
 
 # Quick start
