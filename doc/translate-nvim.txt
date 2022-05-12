@@ -118,18 +118,18 @@ check available options.
 
 >
 	require("translate").setup({
-		defalut = {
-			command = "deepl_free",
-			output = "floating",
-		},
-		preset = {
-		output = {
-		insert = {
-			base = "top",
-			off = -1,
-		},
-		},
-		},
+	    defalut = {
+	        command = "deepl_free",
+	        output = "floating",
+	    },
+	    preset = {
+	        output = {
+	            insert = {
+	                base = "top",
+	                off = -1,
+	            },
+	        },
+	    },
 	})
 <
 
@@ -216,17 +216,17 @@ Options passed to the presets.
 >
 		{
 		    lang_abbr = {
-			en = "english",
-			eng = "english",
+		        en = "english",
+		        eng = "english",
 		    },
 		    end_marks = {
-			english = {
-			    ".",
-			    "?",
-			    "!",
-			    ":",
-			    ";",
-			},
+		        english = {
+		            ".",
+		            "?",
+		            "!",
+		            ":",
+		            ";",
+		        },
 		    },
 		}
 <
@@ -284,16 +284,16 @@ Options passed to the presets.
 		The defalut arguments of curl is
 >
 		{
-			"-X",
-			"POST",
-			"-s",
-			{url},
-			"-d",
-			"auth_key=" .. g:deepl_api_auth_key,
-			"-d",
-			"target_lang=" .. {target-lang},
-			"-d",
-			"text=" .. {text},
+		    "-X",
+		    "POST",
+		    "-s",
+		    {url},
+		    "-d",
+		    "auth_key=" .. g:deepl_api_auth_key,
+		    "-d",
+		    "target_lang=" .. {target-lang},
+		    "-d",
+		    "text=" .. {text},
 		}
 <
 
