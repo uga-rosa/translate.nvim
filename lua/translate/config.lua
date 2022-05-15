@@ -35,7 +35,7 @@ M._preset = {
 M.config = {
     default = {
         parse_before = "trim,natural",
-        command = "translate_shell",
+        command = "google",
         parse_after = "head",
         output = "floating",
     },
