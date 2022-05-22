@@ -35,20 +35,11 @@ function M.get_range() -- example 2. (see below)
     -- { row_s, col_s, row_e, col_e }
     local range = context.ts.get_range("TSComment", cursor) or context.vim.get_range("Comment", cursor)
 
-    if not range then
+    if range then
+        M.remove_symbol(comments, range, pos)
+    else
         print("Here is not in comments")
     end
-
-    local lines = api.nvim_buf_get_lines(0, range[1] - 1, range[3], true)
-    pos._lines = lines
-
-    if range[1] == range[3] and M.is_pattern2(comments, range, pos) then
-        return pos
-    end
-
-    -- If you have made it this far, it should be pattern 3.
-    -- So if it fails inside is_pattern3, it is an error.
-    M.assert_pattern3(comments, range, pos)
 
     return pos
 end
@@ -86,6 +77,20 @@ function M.get_comments()
     end, comments)
 
     return comments
+end
+
+function M.remove_symbol(comments, range, pos)
+    local lines = api.nvim_buf_get_lines(0, range[1] - 1, range[3], true)
+    pos._lines = lines
+
+    if range[1] == range[3] and M.is_pattern2(comments, range, pos) then
+        return pos
+    end
+
+    -- If you have made it this far, it should be pattern 3.
+    -- So if it fails inside is_pattern3, it is an error.
+    M.assert_pattern3(comments, range, pos)
+    return pos
 end
 
 ---Check if a line of 'row' is pattern 1, and if so, check if the lines above and below they are also pattern 1.
