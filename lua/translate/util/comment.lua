@@ -6,6 +6,13 @@ local util = require("translate.util.util")
 
 local M = {}
 
+local string_symbols = {
+    python = {
+        { begin = [[''']], last = [[''']] },
+        { begin = [["""]], last = [["""]] },
+    },
+}
+
 function M.get_range() -- example 2. (see below)
     -- Common comments can be of the following types.
     -- 1. The comment string repeats at the start of each line (e.g. this line).
@@ -36,9 +43,18 @@ function M.get_range() -- example 2. (see below)
     local range = context.ts.get_range("TSComment", cursor) or context.vim.get_range("Comment", cursor)
 
     if range then
-        M.remove_symbol(comments, range, pos)
+        M.remove_comment_symbol(comments, range, pos)
     else
-        print("Here is not in comments")
+        -- filetype check
+        local ft = vim.bo.filetype
+        if vim.tbl_contains(vim.tbl_keys(string_symbols), ft) then
+            range = context.ts.get_range("TSString", cursor) or context.vim.get_range("String", cursor)
+            if range then
+                M.remove_string_symbol(string_symbols[ft], range, pos)
+            end
+        else
+            print("Here is not in comments.")
+        end
     end
 
     return pos
@@ -79,7 +95,7 @@ function M.get_comments()
     return comments
 end
 
-function M.remove_symbol(comments, range, pos)
+function M.remove_comment_symbol(comments, range, pos)
     local lines = api.nvim_buf_get_lines(0, range[1] - 1, range[3], true)
     pos._lines = lines
 
@@ -236,6 +252,39 @@ function M.assert_pattern3(comments, range, pos)
             pos[#pos].col[2] = pos[#pos].col[2] - num_of_com
         else
             error("The end of three-piece can't found")
+        end
+    end
+end
+
+function M.remove_string_symbol(symbols, range, pos)
+    local begin_row, last_row = range[1], range[3]
+    local begin_col, last_col = range[2], range[4]
+
+    local lines = api.nvim_buf_get_lines(0, begin_row - 1, last_row, true)
+    pos._lines = lines
+
+    for i, line in ipairs(lines) do
+        pos[i] = { row = begin_row + i - 1, col = { 1, #line } }
+    end
+    pos[1].col[1] = begin_col
+    pos[#pos].col[2] = last_col
+
+    for _, s in ipairs(symbols) do
+        if vim.startswith(lines[1]:sub(begin_col), s.begin) then
+            pos[1].col[1] = pos[1].col[1] + #s.begin
+            pos[#pos].col[2] = pos[#pos].col[2] - #s.last
+            if #pos >= 2 then
+                local indent = lines[2]:match("^%s*")
+                if #indent > 0 then
+                    for i = 2, #pos do
+                        pos[i].col[1] = #indent + 1
+                    end
+                end
+            end
+            if pos[#pos].col[1] == pos[#pos].col[2] then
+                pos[#pos] = nil
+                pos._lines[#pos._lines] = nil
+            end
         end
     end
 end
