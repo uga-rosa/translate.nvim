@@ -3,29 +3,31 @@ local fn = vim.fn
 
 local comment = require("translate.util.comment")
 local utf8 = require("translate.util.utf8")
+local util = require("translate.util.util")
 
 local M = {}
 local L = {}
 
-function M.get(args, is_visual)
+function M.get(args, mode)
     if args.comment then
         return comment.get_range()
-    elseif is_visual then
-        return L.get_visual_selected()
-    else
+    elseif mode == "n" then
         return L.get_current_line()
+    else
+        return L.get_visual_selected(mode)
     end
 end
 
-function L.get_visual_selected()
-    local mode = fn.visualmode()
-
+function L.get_visual_selected(mode)
     -- {bufnum, lnum, col, off}
-    local tl = fn.getpos("'<")
-    local br = fn.getpos("'>")
+    local start = fn.getpos("v")
+    local last = fn.getpos(".")
+    table.remove(start, 4)
+    table.remove(start, 1)
+    table.remove(last, 4)
+    table.remove(last, 1)
 
-    local pos_s = { tl[2], tl[3] }
-    local pos_e = { br[2], br[3] }
+    local pos_s, pos_e = util.which_front(start, last)
 
     local lines = api.nvim_buf_get_lines(0, pos_s[1] - 1, pos_e[1], true)
 

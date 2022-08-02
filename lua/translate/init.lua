@@ -1,20 +1,18 @@
 local luv = vim.loop
+local fn = vim.fn
 
 local config = require("translate.config")
 local select = require("translate.util.select")
 
 local M = {}
 
-M.setup = config.setup
-
-function M.translate(count, ...)
+function M.translate(mode, args)
     vim.validate({
-        count = { count, "number" },
+        mode = { mode, "string" },
     })
 
-    local args = M._parse_args({ ... })
-    local is_visual = count ~= 0
-    local pos = select.get(args, is_visual)
+    args = M._parse_args(args)
+    local pos = select.get(args, mode)
 
     if #pos == 0 then
         error("Selection could not be recognized.")
@@ -119,6 +117,24 @@ function M._run(functions, arg, pos, cmd_args)
         arg = func(arg, pos, cmd_args)
     end
     return arg
+end
+
+function M.create_command()
+    vim.api.nvim_create_user_command("Translate", function(opts)
+        -- If range is 0, not given, it has been called from normal mode, or visual mode with `<Cmd>` mapping.
+        -- Otherwise it must have been called from visual mode.
+        local mode = opts.range == 0 and fn.mode() or fn.visualmode()
+        M.translate(mode, opts.fargs)
+    end, {
+        range = 0,
+        nargs = "+",
+        complete = config.get_complete_list,
+    })
+end
+
+function M.setup(opt)
+    config.setup(opt)
+    M.create_command()
 end
 
 return M

@@ -130,4 +130,24 @@ function M.seq(start, last, step)
     return l
 end
 
+---Compare position
+---@param pos1 number[] #{row, col}
+---@param pos2 number[] #{row, col}
+---@return number[], number[] #front, end
+function M.which_front(pos1, pos2)
+    -- Row Comparison
+    if pos1[1] < pos2[1] then
+        return pos1, pos2
+    elseif pos1[1] > pos2[1] then
+        return pos2, pos1
+    else
+        -- Col Comparison
+        if pos1[2] < pos2[2] then
+            return pos1, pos2
+        else
+            return pos2, pos1
+        end
+    end
+end
+
 return M

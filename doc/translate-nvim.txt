@@ -100,13 +100,18 @@ Command							*translate-nvim-command*
 			treated as a selection.
 
 
-	If mapping |:Translate|, Do NOT use |<Cmd>|. I use [range] to check
-	whether this command is called from normal mode or visual mode. Please
-	map them as follows.
+	If mapping |:Translate|, You can use |<Cmd>|.
 
 >
-	nnoremap mei :<C-u>Translate EN -source=JA -output=insert<CR>
-	xnoremap mer :Translate EN -source=JA -output=replace<CR>
+	nnoremap me <Cmd>Translate EN<CR>
+	xnoremap me <Cmd>Translate EN<CR>
+<
+
+        If you cannot use it, you must change the format with nmap and xmap.
+
+>
+	nnoremap me :<C-u>Translate EN<CR>
+	xnoremap me :Translate EN<CR>
 <
 
 

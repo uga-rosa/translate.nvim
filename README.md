@@ -104,40 +104,28 @@ I put the quote from the help in the fold.
                 treated as a selection.
 
 
-        If mapping |:Translate|, Do NOT use |<Cmd>|. I use [range] to check
-        whether this command is called from normal mode or visual mode. Please
-        map them as follows.
+        Use <Cmd> for mapping.
+        If you cannot use it, you must change the format with nmap and xmap.
 
 
-        nnoremap mei :<C-u>Translate EN -source=JA -output=insert<CR>
-        xnoremap mer :Translate EN -source=JA -output=replace<CR>
+        nnoremap me <Cmd>Translate EN<CR>
+        xnoremap me <Cmd>Translate EN<CR>
+        
+        Another way.
+
+        nnoremap me :<C-u>Translate EN<CR>
+        xnoremap me :Translate EN<CR>
 
 
 </div></details>
 
-## Keymap
 
-As noted in the help, do not use `<Cmd>` when mapping the :Translate command.
+# Translate the word under the cursor
 
-This is my setting.
+You can use this mapping.
 
 ```vim
-xnoremap <silent> mjf :Translate JA -source=EN -parse_after=window -output=floating<CR>
-nnoremap <silent> mjs :<C-u>Translate JA -source=EN -output=split<CR>
-xnoremap <silent> mjs :Translate JA -source=EN -output=split<CR>
-nnoremap <silent> mji :<C-u>Translate JA -source=EN -output=insert<CR>
-xnoremap <silent> mji :Translate JA -source=EN -output=insert<CR>
-nnoremap <silent> mjr :<C-u>Translate JA -source=EN -output=replace<CR>
-xnoremap <silent> mjr :Translate JA -source=EN -output=replace<CR>
-
-nnoremap <silent> mef :<C-u>Translate EN -source=JA -parse_after=window -output=floating<CR>
-xnoremap <silent> mef :Translate EN -source=JA -parse_after=window -output=floating<CR>
-nnoremap <silent> mes :<C-u>Translate EN -source=JA -output=split<CR>
-xnoremap <silent> mes :Translate EN -source=JA -output=split<CR>
-nnoremap <silent> mei :<C-u>Translate EN -source=JA -output=insert<CR>
-xnoremap <silent> mei :Translate EN -source=JA -output=insert<CR>
-nnoremap <silent> mer :<C-u>Translate EN -source=JA -output=replace<CR>
-xnoremap <silent> mer :Translate EN -source=JA -output=replace<CR>
+nnoremap <space>tw m'viw<Cmd>Translate ZH<CR><Esc>``
 ```
 
-## TODO
+The m' and \`\` can be omitted because they are used to hold the cursor position.
