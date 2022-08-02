@@ -22,7 +22,7 @@ WIP: Available, but still incomplete in some features and subject to destructive
 
 # Requirements
 
-- neovim >= 0.6
+- neovim >= 0.7
 
 The default Google Translate requires nothing but [curl](https://curl.se/).
 

@@ -55,7 +55,7 @@ It provides |:Translate| for it.
 
 
 Requirement:
-  - neovim >= 0.6 (vim.json)
+  - neovim >= 0.7
   - curl (for |translate-nvim-preset-command-google|,
     |translate-nvim-preset-command-deepl-free|, and
     |translate-nvim-preset-command-deepl-pro|)
