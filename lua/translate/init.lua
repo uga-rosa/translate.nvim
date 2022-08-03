@@ -1,8 +1,8 @@
 local luv = vim.loop
-local fn = vim.fn
 
 local config = require("translate.config")
 local select = require("translate.util.select")
+local command = require("translate.command")
 
 local M = {}
 
@@ -119,22 +119,9 @@ function M._run(functions, arg, pos, cmd_args)
     return arg
 end
 
-function M.create_command()
-    vim.api.nvim_create_user_command("Translate", function(opts)
-        -- If range is 0, not given, it has been called from normal mode, or visual mode with `<Cmd>` mapping.
-        -- Otherwise it must have been called from visual mode.
-        local mode = opts.range == 0 and fn.mode() or fn.visualmode()
-        M.translate(mode, opts.fargs)
-    end, {
-        range = 0,
-        nargs = "+",
-        complete = config.get_complete_list,
-    })
-end
-
 function M.setup(opt)
     config.setup(opt)
-    M.create_command()
+    command.create_command(M.translate)
 end
 
 return M
