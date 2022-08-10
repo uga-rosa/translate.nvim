@@ -122,6 +122,7 @@ end
 function M.setup(opt)
     config.setup(opt)
     command.create_command(M.translate)
+    vim.g.loaded_translate_nvim = true
 end
 
 return M
