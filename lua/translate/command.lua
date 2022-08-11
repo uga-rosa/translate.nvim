@@ -47,6 +47,7 @@ function M.get_complete_list(arglead, cmdline, _cursorpos)
     end
 end
 
+---@param cb fun(mode: string, fargs: string[])
 function M.create_command(cb)
     vim.api.nvim_create_user_command("Translate", function(opts)
         -- If range is 0, not given, it has been called from normal mode, or visual mode with `<Cmd>` mapping.
@@ -56,7 +57,7 @@ function M.create_command(cb)
     end, {
         range = 0,
         nargs = "+",
-        complete = config.get_complete_list,
+        complete = M.get_complete_list,
     })
 end
 

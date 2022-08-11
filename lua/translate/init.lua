@@ -2,10 +2,12 @@ local luv = vim.loop
 
 local config = require("translate.config")
 local select = require("translate.util.select")
-local command = require("translate.command")
+local create_command = require("translate.command").create_command
 
 local M = {}
 
+---@param mode string
+---@param args string[]
 function M.translate(mode, args)
     vim.validate({
         mode = { mode, "string" },
@@ -21,6 +23,8 @@ function M.translate(mode, args)
     M._translate(pos, args)
 end
 
+---@param opts string[]
+---@return dictionary
 function M._parse_args(opts)
     local args = {}
     for _, opt in ipairs(opts) do
@@ -52,6 +56,8 @@ local function set_to_top(tbl, elem)
     end
 end
 
+---@param pos positions
+---@param cmd_args dictionary
 function M._translate(pos, cmd_args)
     local parse_before = config.get_funcs("parse_before", cmd_args.parse_before)
     local command, command_name = config.get_func("command", cmd_args.command)
@@ -103,6 +109,8 @@ function M._translate(pos, cmd_args)
     )
 end
 
+---@param pos positions
+---@return string[]
 function M._selection(pos)
     local lines = {}
     for i, line in ipairs(pos._lines) do
@@ -112,6 +120,12 @@ function M._selection(pos)
     return lines
 end
 
+---@generic T
+---@param functions function[]
+---@param arg `T`
+---@param pos positions
+---@param cmd_args? string[]
+---@return T
 function M._run(functions, arg, pos, cmd_args)
     for _, func in ipairs(functions) do
         arg = func(arg, pos, cmd_args)
@@ -119,9 +133,10 @@ function M._run(functions, arg, pos, cmd_args)
     return arg
 end
 
+---@param opt dictionary
 function M.setup(opt)
     config.setup(opt)
-    command.create_command(M.translate)
+    create_command(M.translate)
     vim.g.loaded_translate_nvim = true
 end
 
