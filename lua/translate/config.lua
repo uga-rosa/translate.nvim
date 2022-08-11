@@ -98,14 +98,21 @@ M.config = {
     silent = false,
 }
 
+---@param opt dictionary
 function M.setup(opt)
     M.config = vim.tbl_deep_extend("force", M.config, opt)
 end
 
+---@param name string
+---@return boolean|table
 function M.get(name)
     return M.config[name]
 end
 
+---@param mode string
+---@param name string
+---@return fun(text: string, command_args: dictionary)
+---@return string
 function M.get_func(mode, name)
     name = name or M.config.default[mode]
     local module = M.config[mode][name] or M._preset[mode][name]
@@ -116,6 +123,10 @@ function M.get_func(mode, name)
     end
 end
 
+---@param mode string
+---@param names string
+---@return fun(text: string, command_args: dictionary)[]
+---@return string[]
 function M.get_funcs(mode, names)
     names = names or M.config.default[mode]
     names = vim.split(names, ",")
@@ -131,9 +142,10 @@ function M.get_funcs(mode, names)
     return modules, names
 end
 
--- For completion of command ':Translate'
-
-local function get_keys(mode)
+---For completion of command ':Translate'
+---@param mode string
+---@return string[]
+function M.get_keys(mode)
     local keys = vim.tbl_keys(M.config[mode])
     keys = vim.list_extend(keys, vim.tbl_keys(M._preset[mode]))
     return keys

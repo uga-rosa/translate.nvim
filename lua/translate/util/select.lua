@@ -8,6 +8,18 @@ local util = require("translate.util.util")
 local M = {}
 local L = {}
 
+---@class position
+---@field row integer
+---@field col integer[] { begin, last }
+
+---@class positions
+---@field _lines string[]
+---@field _mode "comment" | "n" | "v" | "V" | ""
+---@field [1] position[]
+
+---@param args dictionary
+---@param mode string
+---@return positions
 function M.get(args, mode)
     if args.comment then
         return comment.get_range()
@@ -18,6 +30,8 @@ function M.get(args, mode)
     end
 end
 
+---@param mode string
+---@return positions
 function L.get_visual_selected(mode)
     local start, last
     -- When called from command line, "v" and "." return the same locations (cursor position, not selection range).
@@ -73,6 +87,7 @@ function L.get_visual_selected(mode)
     return pos
 end
 
+---@return positions
 function L.get_current_line()
     local row = fn.line(".")
     local line = api.nvim_get_current_line()
