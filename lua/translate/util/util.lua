@@ -150,4 +150,23 @@ function M.which_front(pos1, pos2)
     end
 end
 
+---Wrapper function for getpos() that returns only 'row' and 'col'.
+---@param expr string
+---@return integer[] {row, col}
+function M.getpos(expr)
+    local p = vim.fn.getpos(expr)
+    local result = { p[2], p[3] }
+    return result
+end
+
+---Returns whether cursor positions are equal.
+---@param expr1 string
+---@param expr2 string
+---@return boolean
+function M.same_pos(expr1, expr2)
+    local p1 = M.getpos(expr1)
+    local p2 = M.getpos(expr2)
+    return p1[1] == p2[1] and p1[2] == p2[2]
+end
+
 return M
