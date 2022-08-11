@@ -8,6 +8,10 @@ local util = require("translate.util.util")
 local M = {}
 local L = {}
 
+local function is_same(pos1, pos2)
+    return pos1[2] == pos2[2] and pos1[3] == pos2[3]
+end
+
 function M.get(args, mode)
     if args.comment then
         return comment.get_range()
@@ -22,6 +26,14 @@ function L.get_visual_selected(mode)
     -- {bufnum, lnum, col, off}
     local start = fn.getpos("v")
     local last = fn.getpos(".")
+
+    -- When called from command line, "v" and "." return the same locations (cursor position, not selection range).
+    -- In this case, '< and '> must be used.
+    if is_same(start, last) then
+        start = fn.getpos("'<")
+        last = fn.getpos("'>")
+    end
+
     table.remove(start, 4)
     table.remove(start, 1)
     table.remove(last, 4)
