@@ -9,10 +9,6 @@ local M = {}
 ---@param mode string
 ---@param args string[]
 function M.translate(mode, args)
-    vim.validate({
-        mode = { mode, "string" },
-    })
-
     args = M._parse_args(args)
     local pos = select.get(args, mode)
 
@@ -24,7 +20,7 @@ function M.translate(mode, args)
 end
 
 ---@param opts string[]
----@return dictionary
+---@return table
 function M._parse_args(opts)
     local args = {}
     for _, opt in ipairs(opts) do
@@ -57,7 +53,7 @@ local function set_to_top(tbl, elem)
 end
 
 ---@param pos positions
----@param cmd_args dictionary
+---@param cmd_args table
 function M._translate(pos, cmd_args)
     local parse_before = config.get_funcs("parse_before", cmd_args.parse_before)
     local command, command_name = config.get_func("command", cmd_args.command)
@@ -133,7 +129,7 @@ function M._run(functions, arg, pos, cmd_args)
     return arg
 end
 
----@param opt dictionary
+---@param opt table
 function M.setup(opt)
     config.setup(opt)
     create_command(M.translate)

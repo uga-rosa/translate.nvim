@@ -17,7 +17,7 @@ local L = {}
 ---@field _mode "comment" | "n" | "v" | "V" | ""
 ---@field [1] position[]
 
----@param args dictionary
+---@param args table
 ---@param mode string
 ---@return positions
 function M.get(args, mode)

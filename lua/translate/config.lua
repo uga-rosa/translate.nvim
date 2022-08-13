@@ -98,7 +98,7 @@ M.config = {
     silent = false,
 }
 
----@param opt dictionary
+---@param opt table
 function M.setup(opt)
     M.config = vim.tbl_deep_extend("force", M.config, opt)
 end
@@ -111,7 +111,7 @@ end
 
 ---@param mode string
 ---@param name string
----@return fun(text: string, command_args: dictionary)
+---@return fun(text: string, command_args: table)
 ---@return string
 function M.get_func(mode, name)
     name = name or M.config.default[mode]
@@ -125,7 +125,7 @@ end
 
 ---@param mode string
 ---@param names string
----@return fun(text: string, command_args: dictionary)[]
+---@return fun(text: string, command_args: table)[]
 ---@return string[]
 function M.get_funcs(mode, names)
     names = names or M.config.default[mode]
