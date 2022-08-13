@@ -21,7 +21,8 @@ M._preset = {
         window = require("translate.preset.parse_after.window"),
         no_handle = require("translate.preset.parse_after.no_handle"),
         translate_shell = require("translate.preset.parse_after.translate_shell"),
-        deepl = require("translate.preset.parse_after.deepl"),
+        deepl_free = require("translate.preset.parse_after.deepl_free"),
+        deepl_pro = require("translate.preset.parse_after.deepl_pro"),
         google = require("translate.preset.parse_after.google"),
     },
     output = {

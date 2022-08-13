@@ -60,13 +60,9 @@ function M._translate(pos, cmd_args)
     local parse_after = config.get_funcs("parse_after", cmd_args.parse_after)
     local output = config.get_func("output", cmd_args.output)
 
-    if command_name == "deepl_pro" or command_name == "deepl_free" then
-        set_to_top(parse_after, config._preset.parse_after.deepl.cmd)
-    elseif command_name == "translate_shell" then
-        set_to_top(parse_after, config._preset.parse_after.translate_shell.cmd)
-        set_to_top(parse_before, config._preset.parse_before.translate_shell.cmd)
-    elseif command_name == "google" then
-        set_to_top(parse_after, config._preset.parse_after.google.cmd)
+    local after_process = config._preset.parse_after[command_name]
+    if after_process and after_process.cmd then
+        set_to_top(parse_after, after_process.cmd)
     end
 
     local lines = M._selection(pos)
