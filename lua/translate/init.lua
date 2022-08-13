@@ -64,6 +64,7 @@ function M._translate(pos, cmd_args)
         set_to_top(parse_after, config._preset.parse_after.deepl.cmd)
     elseif command_name == "translate_shell" then
         set_to_top(parse_after, config._preset.parse_after.translate_shell.cmd)
+        set_to_top(parse_before, config._preset.parse_before.translate_shell.cmd)
     elseif command_name == "google" then
         set_to_top(parse_after, config._preset.parse_after.google.cmd)
     end
