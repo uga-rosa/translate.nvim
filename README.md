@@ -1,7 +1,5 @@
 # translate.nvim
 
-WIP: Available, but still incomplete in some features and subject to destructive changes in the future.
-
 ![demo](https://user-images.githubusercontent.com/82267684/158013979-52c8ca49-84e1-4ca0-bf30-b8165cca9135.gif)
 
 # Features
@@ -125,7 +123,5 @@ I put the quote from the help in the fold.
 You can use this mapping.
 
 ```vim
-nnoremap <space>tw m'viw<Cmd>Translate ZH<CR><Esc>``
+nnoremap <space>tw viw:Translate ZH<CR>
 ```
-
-The m' and \`\` can be omitted because they are used to hold the cursor position.
