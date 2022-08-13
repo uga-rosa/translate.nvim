@@ -7,6 +7,7 @@ M._preset = {
         concat = require("translate.preset.parse_before.concat"),
         no_handle = require("translate.preset.parse_before.no_handle"),
         translate_shell = require("translate.preset.parse_before.translate_shell"),
+        replace_char = require("translate.preset.parse_before.replace_char"),
     },
     command = {
         translate_shell = require("translate.preset.command.translate_shell"),
@@ -23,6 +24,7 @@ M._preset = {
         translate_shell = require("translate.preset.parse_after.translate_shell"),
         deepl = require("translate.preset.parse_after.deepl"),
         google = require("translate.preset.parse_after.google"),
+        replace_char = require("translate.preset.parse_after.replace_char"),
     },
     output = {
         floating = require("translate.preset.output.floating"),
@@ -150,6 +152,11 @@ function M.get_keys(mode)
     local keys = vim.tbl_keys(M.config[mode])
     keys = vim.list_extend(keys, vim.tbl_keys(M._preset[mode]))
     return keys
+end
+
+--@return string
+function M.get_translate_command()
+    return M.config.default.command
 end
 
 return M

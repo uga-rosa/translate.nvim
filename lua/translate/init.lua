@@ -2,6 +2,7 @@ local luv = vim.loop
 
 local config = require("translate.config")
 local select = require("translate.util.select")
+local replace = require("translate.util.replace")
 local create_command = require("translate.command").create_command
 
 local M = {}
@@ -69,6 +70,9 @@ function M._translate(pos, cmd_args)
         set_to_top(parse_after, config._preset.parse_after.google.cmd)
     end
 
+    set_to_top(parse_before, config._preset.parse_before.replace_char.cmd)
+    set_to_top(parse_after, config._preset.parse_after.replace_char.cmd)
+
     local lines = M._selection(pos)
     pos._lines_selected = lines
 
@@ -133,6 +137,7 @@ end
 ---@param opt table
 function M.setup(opt)
     config.setup(opt)
+    replace.setup()
     create_command(M.translate)
     vim.g.loaded_translate_nvim = true
 end
