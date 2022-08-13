@@ -15,6 +15,13 @@ function M.cmd(text, _)
 
     local lines = vim.split(text, crlf)
 
+    for i, line in ipairs(lines) do
+        if line:match("{{T%-C}}") then
+            vim.pretty_print("yes")
+            lines[i] = line:gsub("{{T%-C}}", "/")
+        end
+    end
+
     return lines
 end
 
