@@ -13,7 +13,11 @@ function M.cmd(lines, pos)
     local results = {}
 
     for i, text in ipairs(lines) do
-        local group = pos._group[i]
+        local group = {}
+
+        if pos._group then
+            group = pos._group[i]
+        end
 
         local widths_origin = {}
         local sum_width_origin = 0
