@@ -123,11 +123,11 @@ function M.has_key(tbl, ...)
 end
 
 ---@param last integer
----@return integer[]
+---@return integer[][]
 function M.seq(last)
     local l = {}
     for i = 1, last do
-        l[i] = i
+        l[i] = { i }
     end
     return l
 end

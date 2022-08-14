@@ -77,7 +77,7 @@ function M._translate(pos, cmd_args)
     ---@type string[]
     lines = M._run(parse_before, lines, pos, cmd_args)
     if not pos._group then
-        pos._group = { util.seq(#lines) }
+        pos._group = util.seq(#lines)
     end
 
     local cmd, args = command(lines, cmd_args)
