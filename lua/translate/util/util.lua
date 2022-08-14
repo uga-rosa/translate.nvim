@@ -122,10 +122,12 @@ function M.has_key(tbl, ...)
     return true
 end
 
-function M.seq(start, last, step)
+---@param last integer
+---@return integer[]
+function M.seq(last)
     local l = {}
-    for i = start, last, step do
-        table.insert(l, i)
+    for i = 1, last do
+        l[i] = i
     end
     return l
 end

@@ -1,6 +1,9 @@
 local M = {}
 
-function M.cmd(lines, pos, _)
+---@param lines string[]
+---@param pos positions
+---@return string[]
+function M.cmd(lines, pos)
     for i, line in ipairs(lines) do
         local pre = line:match("^%s*")
         pos[i].col[1] = pos[i].col[1] + #pre

@@ -122,7 +122,7 @@ end
 
 ---@param mode string
 ---@param name string
----@return fun(text: string, command_args: table)
+---@return fun(lines: string[], command_args: table)
 ---@return string
 function M.get_func(mode, name)
     name = name or M.config.default[mode]

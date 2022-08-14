@@ -1,13 +1,11 @@
 local M = {}
 
----@param text string|string[]
+---@param lines string[]
 ---@param command_args table
 ---@return string
----@return table
-function M.cmd(text, command_args)
-    if type(text) == "table" then
-        text = table.concat(text, "\n")
-    end
+---@return string[]
+function M.cmd(lines, command_args)
+    local text = table.concat(lines, "\n")
 
     local source = command_args.source or ""
     local target = command_args.target
@@ -18,7 +16,7 @@ function M.cmd(text, command_args)
     local args = {
         "-b",
         "-no-ansi",
-        "-no-autocorrect"
+        "-no-autocorrect",
     }
 
     if #options.args then

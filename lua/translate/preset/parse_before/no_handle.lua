@@ -1,6 +1,8 @@
 local M = {}
 
-function M.cmd(lines, _, _)
+---@param lines string[]
+---@return string[]
+function M.cmd(lines)
     return lines
 end
 

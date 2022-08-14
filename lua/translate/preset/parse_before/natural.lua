@@ -9,6 +9,10 @@ local function inc(tbl, index)
     return index
 end
 
+---@param lines string[]
+---@param pos positions
+---@param cmd_args table
+---@return string[]
 function M.cmd(lines, pos, cmd_args)
     local option = require("translate.config").get("preset").parse_before.natural
 

@@ -3,6 +3,7 @@ local luv = vim.loop
 local config = require("translate.config")
 local replace = require("translate.util.replace")
 local select = require("translate.util.select")
+local util = require("translate.util.util")
 local create_command = require("translate.command").create_command
 
 local M = {}
@@ -73,9 +74,13 @@ function M._translate(pos, cmd_args)
     local lines = M._selection(pos)
     pos._lines_selected = lines
 
-    local text = M._run(parse_before, lines, pos, cmd_args)
+    ---@type string[]
+    lines = M._run(parse_before, lines, pos, cmd_args)
+    if not pos._group then
+        pos._group = { util.seq(#lines) }
+    end
 
-    local cmd, args = command(text, cmd_args)
+    local cmd, args = command(lines, cmd_args)
     local stdio = pipes()
 
     local handle
