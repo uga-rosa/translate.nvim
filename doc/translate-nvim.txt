@@ -13,6 +13,7 @@ Option					|translate-nvim-option|
 - command				|translate-nvim-option-command|
 - parse_after				|translate-nvim-option-parse-after|
 - output				|translate-nvim-option-output|
+- replace_symbols			|translate-nvim-option-replace-symbols|
 - silent				|translate-nvim-option-silent|
 preset					|translate-nvim-preset|
 - parse_before				|translate-nvim-preset-parse-before|
@@ -472,6 +473,29 @@ default: {}
 You can set functions to be passed the result of the translation. Set tables
 with the value which has as 'cmd' key a function. Check
 'lua/translate/preset/output' for details.
+
+
+					*translate-nvim-option-replace-symbols*
+replace_symbols ~
+
+table
+defalut: {
+        translate_shell = {
+            ["="] = "{{@E@}}",
+            ["#"] = "{{@S@}}",
+            ["/"] = "{{@C@}}",
+        },
+        deepl_free = {},
+        deepl_pro = {},
+        google = {},
+}
+
+This plugin escapes special strings for successful translation. This is its
+corresponding dictionary. For example, translate_shell has problems with '='
+being translated into the strange string 'u003d', or failing to translate
+strings that begin with '/'. Therefore, we temporarily convert the symbols to
+special symbols such as '{{@E@}}' before performing the translation, and then
+restore the symbols in the translation result for normal translation.
 
 
 						*translate-nvim-option-silent*

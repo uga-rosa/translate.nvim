@@ -1,6 +1,7 @@
 local luv = vim.loop
 
 local config = require("translate.config")
+local replace = require("translate.util.replace")
 local select = require("translate.util.select")
 local create_command = require("translate.command").create_command
 
@@ -59,6 +60,10 @@ function M._translate(pos, cmd_args)
     local command, command_name = config.get_func("command", cmd_args.command)
     local parse_after = config.get_funcs("parse_after", cmd_args.parse_after)
     local output = config.get_func("output", cmd_args.output)
+
+    replace.set_command_name(command_name)
+    set_to_top(parse_before, replace.before)
+    set_to_top(parse_after, replace.after)
 
     local after_process = config._preset.parse_after[command_name]
     if after_process and after_process.cmd then

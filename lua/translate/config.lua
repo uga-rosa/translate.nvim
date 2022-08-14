@@ -6,7 +6,6 @@ M._preset = {
         trim = require("translate.preset.parse_before.trim"),
         concat = require("translate.preset.parse_before.concat"),
         no_handle = require("translate.preset.parse_before.no_handle"),
-        translate_shell = require("translate.preset.parse_before.translate_shell"),
     },
     command = {
         translate_shell = require("translate.preset.command.translate_shell"),
@@ -98,6 +97,16 @@ M.config = {
         },
     },
     silent = false,
+    replace_symbols = {
+        translate_shell = {
+            ["="] = "{{@E@}}",
+            ["#"] = "{{@S@}}",
+            ["/"] = "{{@C@}}",
+        },
+        deepl_free = {},
+        deepl_pro = {},
+        google = {},
+    },
 }
 
 ---@param opt table
