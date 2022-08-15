@@ -481,9 +481,9 @@ replace_symbols ~
 table
 defalut: {
         translate_shell = {
-            ["="] = "{{@E@}}",
-            ["#"] = "{{@S@}}",
-            ["/"] = "{{@C@}}",
+            ["="] = "{@E@}",
+            ["#"] = "{@S@}",
+            ["/"] = "{@C@}",
         },
         deepl_free = {},
         deepl_pro = {},

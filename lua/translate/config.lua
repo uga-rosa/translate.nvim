@@ -99,9 +99,9 @@ M.config = {
     silent = false,
     replace_symbols = {
         translate_shell = {
-            ["="] = "{{@E@}}",
-            ["#"] = "{{@S@}}",
-            ["/"] = "{{@C@}}",
+            ["="] = "{@E@}",
+            ["#"] = "{@S@}",
+            ["/"] = "{@C@}",
         },
         deepl_free = {},
         deepl_pro = {},
