@@ -25,7 +25,10 @@ function M.cmd(lines, _)
 
     M.window._current = { win = win, buf = buf }
 
-    vim.cmd('au CursorMoved * ++once lua require("translate.preset.output.floating").window.close()')
+    api.nvim_create_autocmd("CursorMoved", {
+        callback = M.window.close,
+        once = true,
+    })
 end
 
 function M.window.close()
