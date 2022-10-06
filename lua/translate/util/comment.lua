@@ -166,9 +166,9 @@ end
 ---@param comments table
 ---@param row number
 ---@param prefix? string
----@return boolean is_pattern1
----@return table col
----@return string prefix
+---@return boolean? is_pattern1
+---@return table? col
+---@return string? prefix
 function M._is_pattern1(comments, row, prefix)
     -- 1. the comment string repeats at the start of each line (e.g. this line)
     local line = fn.getline(row)
@@ -271,7 +271,7 @@ function M.remove_string_symbol(symbols, range, pos)
 
     for _, s in ipairs(symbols) do
         if vim.startswith(lines[1]:sub(begin_col), s.begin) then
-            pos[1].col[1] = pos[1].col[1] + #s.begin
+            pos[1].col[1] = pos[1].col[1] + #s.begin - 1
             pos[#pos].col[2] = pos[#pos].col[2] - #s.last
             if #pos >= 2 then
                 local indent = lines[2]:match("^%s*")
@@ -280,6 +280,10 @@ function M.remove_string_symbol(symbols, range, pos)
                         pos[i].col[1] = #indent + 1
                     end
                 end
+            end
+            if pos[1].col[1] == pos[1].col[2] then
+                table.remove(pos, 1)
+                table.remove(pos._lines, 1)
             end
             if pos[#pos].col[1] == pos[#pos].col[2] then
                 pos[#pos] = nil
