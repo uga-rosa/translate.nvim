@@ -1,6 +1,7 @@
 local fn = vim.fn
 
 local util = require("translate.util.util")
+local TreeSitter = require("translate.kit.Lua.TreeSitter")
 
 local M = {
     vim = {},
@@ -10,7 +11,7 @@ local M = {
 ---Get vim's syntax groups for specified position.
 ---NOTE: This function accepts 1-origin cursor position.
 ---@param cursor number[] @{lnum, col}
----@return string[]
+---@return string[]?
 function M.vim.get_range(group_name, cursor)
     if not M.vim.is_group(group_name, cursor) then
         return
@@ -45,7 +46,7 @@ end
 ---Moves to the end of the next word or the beginning of the previous word.
 ---@param pos number[] @{ row, col }
 ---@param dir integer @if 0, next, otherwise previous
----@return number row, number col
+---@return { row: number, col: number }?
 function M.vim.jump(pos, dir)
     local row, col = pos[1], pos[2]
     local current_line = fn.getline(row)
@@ -91,63 +92,32 @@ function M.vim.is_group(group_name, pos)
     return false
 end
 
-function M.ts.get_range(group_name, cursor)
-    local name_range = M.ts.get_syntax_groups(cursor)
-    return name_range[group_name]
-end
-
 ---Get tree-sitter's syntax groups for specified position.
----NOTE: This function accepts 0-origin cursor position.
----@param pos number[]
----@return string[]
-function M.ts.get_syntax_groups(pos)
+---@param node_type string
+---@param pos number[] (1,1)-index
+---@return string[]? range
+function M.ts.get_range(node_type, pos)
+    local row, col = unpack(pos)
     -- (1, 1) -> (0, 0)
-    pos = vim.tbl_map(function(p)
-        return p - 1
-    end, pos)
+    row = row - 1
+    col = col - 1
 
-    local bufnr = vim.api.nvim_get_current_buf()
-
-    local highlighter = vim.treesitter.highlighter.active[bufnr]
-    if not highlighter then
-        return {}
+    local node = TreeSitter.get_node_at(row, col)
+    if node == nil then
+        return
     end
-
-    local contains = function(node)
-        local row_s, col_s, row_e, col_e = node:range()
-        local contains = true
-        contains = contains and (row_s < pos[1] or (row_s == pos[1] and col_s <= pos[2]))
-        contains = contains and (pos[1] < row_e or (row_e == pos[1] and pos[2] < col_e))
-        return contains
+    local parents = TreeSitter.parents(node)
+    for _, p_node in ipairs(parents) do
+        if p_node:type() == node_type then
+            local s_row, s_col, e_row, e_col = p_node:range()
+            -- From 0-index to 1-index
+            s_row = s_row + 1
+            s_col = s_col + 1
+            e_row = e_row + 1
+            e_col = e_col + 1
+            return { s_row, s_col, e_row, e_col }
+        end
     end
-
-    local name_range = {}
-
-    highlighter.tree:for_each_tree(function(tstree, ltree)
-        if not tstree then
-            return
-        end
-
-        local root = tstree:root()
-        if contains(root) then
-            local query = highlighter:get_query(ltree:lang()):query()
-            for id, node in query:iter_captures(root, bufnr, pos[1], pos[1] + 1) do
-                if contains(node) then
-                    local name = vim.treesitter.highlighter.hl_map[query.captures[id]]
-                    if name then
-                        local range = { node:range() }
-                        -- (0, 0) -> (1, 1)
-                        range = vim.tbl_map(function(r)
-                            return r + 1
-                        end, range)
-                        name_range[name] = range
-                    end
-                end
-            end
-        end
-    end)
-
-    return name_range
 end
 
 return M

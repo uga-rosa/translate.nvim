@@ -40,7 +40,7 @@ function M.get_range() -- example 2. (see below)
     end
 
     -- { row_s, col_s, row_e, col_e }
-    local range = context.ts.get_range("TSComment", cursor) or context.vim.get_range("Comment", cursor)
+    local range = context.ts.get_range("comment", cursor) or context.vim.get_range("Comment", cursor)
 
     if range then
         M.remove_comment_symbol(comments, range, pos)
@@ -48,7 +48,7 @@ function M.get_range() -- example 2. (see below)
         -- filetype check
         local ft = vim.bo.filetype
         if vim.tbl_contains(vim.tbl_keys(string_symbols), ft) then
-            range = context.ts.get_range("TSString", cursor) or context.vim.get_range("String", cursor)
+            range = context.ts.get_range("string", cursor) or context.vim.get_range("String", cursor)
             if range then
                 M.remove_string_symbol(string_symbols[ft], range, pos)
             end
