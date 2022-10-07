@@ -15,7 +15,8 @@ function M.translate(mode, args)
     local pos = select.get(args, mode)
 
     if #pos == 0 then
-        error("Selection could not be recognized.")
+        vim.notify("Selection could not be recognized.")
+        return
     end
 
     M._translate(pos, args)

@@ -53,7 +53,7 @@ function M.get_range() -- example 2. (see below)
                 M.remove_string_symbol(string_symbols[ft], range, pos)
             end
         else
-            print("Here is not in comments.")
+            vim.notify("Here is not in comments.")
         end
     end
 
