@@ -20,7 +20,7 @@
 
 # Requirements
 
-- neovim >= 0.7
+- neovim 0.8+
 
 The default Google Translate requires nothing but [curl](https://curl.se/).
 
