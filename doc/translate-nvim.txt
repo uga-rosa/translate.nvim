@@ -546,7 +546,7 @@ previous function.
 	|translate-nvim-option-preset-parse-before-concat|.
 
 
-					*translate-nvim-preset-parse-after-no-handle*
+				*translate-nvim-preset-parse-before-no-handle*
 	no_handle ~
 
 	If you don't want to adjust anything, use this.
