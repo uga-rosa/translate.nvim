@@ -102,12 +102,12 @@ function M._translate(pos, cmd_args)
 
     luv.read_start(
         stdio[2],
-        vim.schedule_wrap(function(err, data)
+        vim.schedule_wrap(function(err, result)
             assert(not err, err)
 
-            if data then
-                data = M._run(parse_after, data, pos)
-                output(data, pos)
+            if result then
+                result = M._run(parse_after, result, pos)
+                output(result, pos)
             end
         end)
     )

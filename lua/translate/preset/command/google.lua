@@ -1,3 +1,5 @@
+local util = require("translate.util.util")
+
 local M = {}
 
 M.url =
@@ -8,17 +10,34 @@ M.url =
 ---@return string
 ---@return string[]
 function M.cmd(lines, command_args)
-    local cmd = "curl"
-    local args = {
-        "-sL",
-        M.url,
-        "-d",
-        vim.json.encode({
-            text = lines,
-            target = command_args.target,
-            source = command_args.source,
-        }),
-    }
+    local data = vim.json.encode({
+        text = lines,
+        target = command_args.target,
+        source = command_args.source,
+    })
+    local cmd, args
+    if vim.fn.has("win32") == 1 then
+        cmd = "cmd.exe"
+        local path = util.write_temp_data(data)
+        args = {
+            "/c",
+            table.concat({
+                "curl",
+                "-sL",
+                M.url,
+                "-d",
+                "@" .. path,
+            }, " "),
+        }
+    else
+        cmd = "curl"
+        args = {
+            "-sL",
+            M.url,
+            "-d",
+            data,
+        }
+    end
     return cmd, args
 end
 

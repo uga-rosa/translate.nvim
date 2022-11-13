@@ -1,4 +1,6 @@
+local fn = vim.fn
 local api = vim.api
+local luv = vim.loop
 local utf8 = require("translate.util.utf8")
 
 local M = {}
@@ -169,6 +171,19 @@ function M.same_pos(expr1, expr2)
     local p1 = M.getpos(expr1)
     local p2 = M.getpos(expr2)
     return p1[1] == p2[1] and p1[2] == p2[2]
+end
+
+---@param text string #json string
+---@return string
+function M.write_temp_data(text)
+    local dir = fn.expand(fn.stdpath("cache") .. "/translate")
+    vim.fn.mkdir(dir, "p")
+    local path = fn.expand(dir .. "/data.json")
+    -- tonumber("666", 8) -> 438
+    local fd = assert(luv.fs_open(path, "w", 438))
+    assert(luv.fs_write(fd, text))
+    assert(luv.fs_close(fd))
+    return path
 end
 
 return M
