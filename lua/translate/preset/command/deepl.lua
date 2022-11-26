@@ -32,6 +32,11 @@ function M._cmd(url, lines, command_args)
         table.insert(args, "source_lang" .. command_args.source)
     end
 
+    if command_args.proxy then
+        table.insert(args, "-x")
+        table.insert(args, command_args.proxy)
+    end
+
     local options = require("translate.config").get("preset").command["deepl_pro"]
 
     if #options.args > 0 then

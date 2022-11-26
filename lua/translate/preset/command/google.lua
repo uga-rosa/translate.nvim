@@ -37,6 +37,12 @@ function M.cmd(lines, command_args)
             "-d",
             data,
         }
+
+        -- NOTE: untestd on windows, otherwise codeblock shouldn't be scooped
+        if command_args.proxy then
+            table.insert(args, "-x")
+            table.insert(args, command_args.proxy)
+        end
     end
     return cmd, args
 end
