@@ -1,5 +1,5 @@
 if vim.g.loaded_translate_nvim then
-    return
+  return
 end
 
 require("translate").setup({})

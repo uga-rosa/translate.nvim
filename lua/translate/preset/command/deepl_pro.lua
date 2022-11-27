@@ -7,8 +7,8 @@ local M = {}
 ---@return string cmd
 ---@return string[] args
 function M.cmd(lines, command_args)
-    local url = "https://api.deepl.com/v2/translate"
-    return deepl._cmd(url, lines, command_args)
+  local url = "https://api.deepl.com/v2/translate"
+  return deepl._cmd(url, lines, command_args)
 end
 
 M.complete_list = deepl.complete_list

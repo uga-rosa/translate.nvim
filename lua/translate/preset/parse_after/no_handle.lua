@@ -1,7 +1,7 @@
 local M = {}
 
 function M.cmd(lines, _)
-    return lines
+  return lines
 end
 
 return M

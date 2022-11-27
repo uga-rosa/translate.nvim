@@ -5,20 +5,20 @@ local async = Async.async
 local await = Async.await
 
 describe("kit.Async", function()
-    it("should work like JavaScript Promise", function()
-        local multiply = async(function(v)
-            return AsyncTask.new(function(resolve)
-                vim.schedule(function()
-                    resolve(v * v)
-                end)
-            end)
+  it("should work like JavaScript Promise", function()
+    local multiply = async(function(v)
+      return AsyncTask.new(function(resolve)
+        vim.schedule(function()
+          resolve(v * v)
         end)
-        local num = async(function()
-            local num = 2
-            num = await(multiply(num))
-            num = await(multiply(num))
-            return num
-        end)():sync()
-        assert.are.equal(num, 16)
+      end)
     end)
+    local num = async(function()
+      local num = 2
+      num = await(multiply(num))
+      num = await(multiply(num))
+      return num
+    end)():sync()
+    assert.are.equal(num, 16)
+  end)
 end)

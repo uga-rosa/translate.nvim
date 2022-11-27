@@ -3,40 +3,40 @@ local api = vim.api
 local util = require("translate.util.util")
 
 local M = {
-    window = {},
+  window = {},
 }
 
 function M.cmd(lines, _)
-    if type(lines) == "string" then
-        lines = { lines }
-    end
+  if type(lines) == "string" then
+    lines = { lines }
+  end
 
-    M.window.close()
+  M.window.close()
 
-    local buf = api.nvim_create_buf(false, true)
-    api.nvim_buf_set_lines(buf, 0, -1, true, lines)
+  local buf = api.nvim_create_buf(false, true)
+  api.nvim_buf_set_lines(buf, 0, -1, true, lines)
 
-    local options = require("translate.config").get("preset").output.floating
+  local options = require("translate.config").get("preset").output.floating
 
-    options.width = util.max_width_in_string_list(lines)
-    options.height = #lines
+  options.width = util.max_width_in_string_list(lines)
+  options.height = #lines
 
-    local win = api.nvim_open_win(buf, false, options)
+  local win = api.nvim_open_win(buf, false, options)
 
-    M.window._current = { win = win, buf = buf }
+  M.window._current = { win = win, buf = buf }
 
-    api.nvim_create_autocmd("CursorMoved", {
-        callback = M.window.close,
-        once = true,
-    })
+  api.nvim_create_autocmd("CursorMoved", {
+    callback = M.window.close,
+    once = true,
+  })
 end
 
 function M.window.close()
-    if M.window._current then
-        api.nvim_win_close(M.window._current.win, false)
-        api.nvim_buf_delete(M.window._current.buf, {})
-        M.window._current = nil
-    end
+  if M.window._current then
+    api.nvim_win_close(M.window._current.win, false)
+    api.nvim_buf_delete(M.window._current.buf, {})
+    M.window._current = nil
+  end
 end
 
 return M
