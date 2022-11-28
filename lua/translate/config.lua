@@ -56,6 +56,9 @@ M.config = {
       },
     },
     command = {
+      google = {
+        args = {},
+      },
       translate_shell = {
         args = {},
       },

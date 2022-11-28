@@ -38,6 +38,12 @@ function M.cmd(lines, command_args)
       data,
     }
   end
+
+  local options = require("translate.config").get("preset").command.google
+  if #options.args > 0 then
+    args = vim.list_extend(args, options.args)
+  end
+
   return cmd, args
 end
 

@@ -266,9 +266,10 @@ Options passed to the presets.
 				*translate-nvim-option-preset-command-google*
 		google ~
 
-		nil
+		table
+		default: { args = {} }
 
-		There are currently no options for this.
+		Set the extra arguments to be passed to the 'curl' command.
 
 
 			*translate-nvim-option-preset-command-translate-shell*
@@ -277,7 +278,7 @@ Options passed to the presets.
 		table
 		default: { args = {} }
 
-		Set the arguments to be passed to the 'trans' command.
+		Set the extra arguments to be passed to the 'trans' command.
 
 
 				*translate-nvim-option-preset-command-deepl-free*
@@ -286,22 +287,7 @@ Options passed to the presets.
 		table
 		default: { args = {} }
 
-		Set the arguments to be added to the 'curl' command.
-		The defalut arguments of curl is
->
-		{
-		    "-X",
-		    "POST",
-		    "-s",
-		    {url},
-		    "-d",
-		    "auth_key=" .. g:deepl_api_auth_key,
-		    "-d",
-		    "target_lang=" .. {target-lang},
-		    "-d",
-		    "text=" .. {text},
-		}
-<
+		Set the extra arguments to be passed to the 'curl' command.
 
 
 				*translate-nvim-option-preset-command-deepl-pro*
@@ -310,7 +296,7 @@ Options passed to the presets.
 		table
 		default: { args = {} }
 
-		Set the arguments to be added to the 'curl' command.
+		Set the extra arguments to be passed to the 'curl' command.
 
 
 				*translate-nvim-option-preset-parse-after*

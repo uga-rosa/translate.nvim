@@ -10,8 +10,6 @@ function M.cmd(lines, command_args)
   local source = command_args.source or ""
   local target = command_args.target
 
-  local options = require("translate.config").get("preset").command.translate_shell
-
   local cmd = "trans"
   local args = {
     "-b",
@@ -19,7 +17,8 @@ function M.cmd(lines, command_args)
     "-no-autocorrect",
   }
 
-  if #options.args then
+  local options = require("translate.config").get("preset").command.translate_shell
+  if #options.args > 0 then
     args = vim.list_extend(args, options.args)
   end
 

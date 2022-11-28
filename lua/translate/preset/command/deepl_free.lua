@@ -8,7 +8,14 @@ local M = {}
 ---@return string[] args
 function M.cmd(lines, command_args)
   local url = "https://api-free.deepl.com/v2/translate"
-  return deepl._cmd(url, lines, command_args)
+  local cmd, args = deepl._cmd(url, lines, command_args)
+
+  local options = require("translate.config").get("preset").command.deepl_free
+  if #options.args > 0 then
+    args = vim.list_extend(args, options.args)
+  end
+
+  return cmd, args
 end
 
 M.complete_list = deepl.complete_list

@@ -32,12 +32,6 @@ function M._cmd(url, lines, command_args)
     table.insert(args, "source_lang" .. command_args.source)
   end
 
-  local options = require("translate.config").get("preset").command["deepl_pro"]
-
-  if #options.args > 0 then
-    args = vim.list_extend(args, options.args)
-  end
-
   return cmd, args
 end
 
