@@ -15,9 +15,9 @@ local modes = {
 
 ---@param arglead string #The leading portion of the argument currently being completed on
 ---@param cmdline string #The entire command line
----@param _cursorpos number #the cursor position in it (byte index)
+---@param _ number #the cursor position in it (byte index)
 ---@return string[]?
-function M.get_complete_list(arglead, cmdline, _cursorpos)
+function M.get_complete_list(arglead, cmdline, _)
   local mode
   if not vim.startswith(arglead, "-") then
     mode = "target"
@@ -27,23 +27,15 @@ function M.get_complete_list(arglead, cmdline, _cursorpos)
     return modes
   end
 
-  if vim.regex([[\V\(parse_before\|command\|parse_after\|output\)]]):match_str(mode) then
+  if vim.tbl_contains({ "parse_before", "command", "parse_after", "output" }, mode) then
     return config.get_keys(mode)
   elseif vim.tbl_contains({ "source", "target" }, mode) then
-    local command = cmdline:match("-command=(%S*)")
-    command = command or config.config.default.command
-
-    command = config.config.command[command] or config._preset.command[command]
-    if not command then
-      return
+    local command = cmdline:match("-command=(%S+)")
+    command = command or config.get("default").command
+    local module = config.config.command[command] or config._preset.command[command]
+    if module and module.complete_list then
+      return module.complete_list(mode == "target")
     end
-
-    local complete_list = command.complete_list
-    if not complete_list then
-      return
-    end
-
-    return complete_list(mode == "target")
   end
 end
 
