@@ -369,6 +369,7 @@ Options passed to the presets.
 			row = 1,
 			col = 1,
 			border = "single",
+			filetype = "translate",
 		}
 
 		The option passed as the 3rd argument of |nvim_open_win()|.
@@ -663,11 +664,9 @@ Function passed the result of translation.
 					*translate-nvim-preset-output-split*
 	split ~
 
-	Split the window and output the result to it. The name of the output
-	buffer is 'translate://output' and the file type is 'translate'. By
-	default, the previous translation result is deleted each time. If you
-	want to keep it, use the option.
-	|translate-nvim-option-preset-output-split|.
+	Split the window and output the result to it. By default, the previous
+	translation result is deleted each time. If you want to keep it, use
+	the option. See |translate-nvim-option-preset-output-split|.
 
 
 					*translate-nvim-preset-output-floating*

@@ -13,15 +13,24 @@ function M.cmd(lines, _)
 
   M.window.close()
 
-  local buf = api.nvim_create_buf(false, true)
-  api.nvim_buf_set_lines(buf, 0, -1, true, lines)
-
   local options = require("translate.config").get("preset").output.floating
 
-  options.width = util.max_width_in_string_list(lines)
-  options.height = #lines
+  local buf = api.nvim_create_buf(false, true)
+  api.nvim_buf_set_lines(buf, 0, -1, true, lines)
+  api.nvim_set_option_value("filetype", options.filetype, { buf = buf })
 
-  local win = api.nvim_open_win(buf, false, options)
+  local width = util.max_width_in_string_list(lines)
+  local height = #lines
+
+  local win = api.nvim_open_win(buf, false, {
+    relative = options.relative,
+    style = options.style,
+    width = width,
+    height = height,
+    row = options.row,
+    col = options.col,
+    border = options.border,
+  })
 
   M.window._current = { win = win, buf = buf }
 
