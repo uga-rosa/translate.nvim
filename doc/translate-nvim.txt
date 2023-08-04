@@ -157,7 +157,7 @@ See |translate-nvim-preset|, to check the presets provided by |translate-nvim|.
 
 	string
 	default: 'trim,natural'
-	
+
 	See |translate-nvim-preset-parse-before-trim| and
 	|translate-nvim-preset-parse-before-concat|.
 
@@ -169,14 +169,14 @@ See |translate-nvim-preset|, to check the presets provided by |translate-nvim|.
 	default: 'google'
 
 	See |translate-nvim-preset-command-google|.
-	
+
 
 				*translate-nvim-option-default-parse-after*
 	parse_after ~
 
 	string
 	default: 'head'
-	
+
 	See |translate-nvim-preset-parse-after-remove-newline| and
 	|translate-nvim-preset-parse-after-floating|.
 
@@ -244,9 +244,9 @@ Options passed to the presets.
 
 				*translate-nvim-option-preset-parse-before-trim*
 		trim ~
-		
+
 		nil
-		
+
 		There are currently no options for 'trim'.
 
 
@@ -311,7 +311,7 @@ Options passed to the presets.
 		oneline, head, rate, translate_shell, deepl ~
 
 		nil
-		
+
 		There are currently no options for these.
 
 
@@ -359,7 +359,7 @@ Options passed to the presets.
 
 				*translate-nvim-option-preset-output-floating*
 		floating ~
-		
+
 		table
 		default: {
 			relative = "cursor",
@@ -370,7 +370,7 @@ Options passed to the presets.
 			col = 1,
 			border = "single",
 		}
-		
+
 		The option passed as the 3rd argument of |nvim_open_win()|.
 		The 'width' and 'height' are automatically calculated from the
 		received array.
@@ -378,19 +378,19 @@ Options passed to the presets.
 
 				*translate-nvim-option-preset-output-insert*
 		insert ~
-		
+
 		table
 		default: {
 			base = 'bottom',
 			off = 0,
 		}
-		
+
 		Where to insert the translation result. If 'base' is 'top',
 		the first line of the selection is used as the base, else if
 		'bottom', the last of line the selection. Finally, add 'off'
 		to the base. For example, with the default, it will be
 		inserted just bellow the selection.
-	
+
 
 				*translate-nvim-option-preset-output-replace*
 		replace ~
@@ -404,12 +404,12 @@ Options passed to the presets.
 
 				*translate-nvim-option-preset-output-register*
 		register ~
-		
+
 		table
 		default: {
 			name = vim.v.register
 		}
-		
+
 		Sets the translation result to the register specified by
 		'name'. Users who set |clipboard| may want to check
 		|register-variable| before changing this option.
