@@ -42,8 +42,8 @@ function M.cmd(lines, pos)
   else
     split_win()
     vim.cmd("e " .. option.name)
-    api.nvim_buf_set_option(0, "buftype", "nofile")
-    vim.bo.filetype = option.filetype
+    api.nvim_set_option_value("buftype", "nofile", { buf = 0 })
+    api.nvim_set_option_value("filetype", option.filetype, { buf = 0 })
   end
 
   if option.append and not M._buf_empty() then
