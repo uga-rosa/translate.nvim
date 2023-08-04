@@ -667,35 +667,36 @@ Function passed the result of translation.
 	buffer is 'translate://output' and the file type is 'translate'. By
 	default, the previous translation result is deleted each time. If you
 	want to keep it, use the option.
-	|translate-nvim-option-output-split|.
+	|translate-nvim-option-preset-output-split|.
 
 
 					*translate-nvim-preset-output-floating*
 	floating ~
 
 	Display the result in a floating window. See
-	|translate-nvim-option-output-floating|.
+	|translate-nvim-option-preset-output-floating|.
 
 
 					*translate-nvim-preset-output-insert*
 	insert ~
 
 	Insert the result into the current buffer. By default, it is inserted
-	just below the selection. See |translate-nvim-option-output-insert|.
+	just below the selection. See
+	|translate-nvim-option-preset-output-insert|.
 
 
 					*translate-nvim-preset-output-replace*
 	replace ~
 
 	Replace the original text with the result. See
-	|translate-nvim-option-output-replace|.
+	|translate-nvim-option-preset-output-replace|.
 
 
 					*translate-nvim-preset-output-register*
 	register ~
 
 	Set the result to the register. See
-	|translate-nvim-option-output-register|.
+	|translate-nvim-option-preset-output-register|.
 
 
 
