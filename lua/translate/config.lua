@@ -81,6 +81,7 @@ M.config = {
         row = 1,
         col = 1,
         border = "single",
+        filetype = "translate",
       },
       split = {
         position = "top",
