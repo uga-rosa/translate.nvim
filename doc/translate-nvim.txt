@@ -370,6 +370,7 @@ Options passed to the presets.
 			col = 1,
 			border = "single",
 			filetype = "translate",
+			zindex = 50,
 		}
 
 		The option passed as the 3rd argument of |nvim_open_win()|.
