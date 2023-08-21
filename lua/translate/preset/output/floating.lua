@@ -30,6 +30,7 @@ function M.cmd(lines, _)
     row = options.row,
     col = options.col,
     border = options.border,
+    zindex = options.zindex,
   })
 
   M.window._current = { win = win, buf = buf }
