@@ -7,7 +7,7 @@ Introduction				|translate-nvim-introduction|
 Command					|translate-nvim-command|
 Setup					|translate-nvim-setup|
 Option					|translate-nvim-option|
-- defalut				|translate-nvim-option-default|
+- default				|translate-nvim-option-default|
 - preset				|translate-nvim-option-preset|
 - parse_before				|translate-nvim-option-parse-before|
 - command				|translate-nvim-option-command|
@@ -124,7 +124,7 @@ check available options.
 
 >
 	require("translate").setup({
-	    defalut = {
+	    default = {
 	        command = "deepl_free",
 	        output = "floating",
 	    },
@@ -204,7 +204,7 @@ Options passed to the presets.
 		natural ~
 
 		table
-		defalut: {
+		default: {
 		    lang_abbr = {},
 		    end_marks = {},
 		    start_marks = {},
@@ -254,7 +254,7 @@ Options passed to the presets.
 		concat ~
 
 		table
-		defalut: { sep = " " }
+		default: { sep = " " }
 
 		Sets the delimiter used to join lines.
 
@@ -421,7 +421,7 @@ Options passed to the presets.
 parse_before ~
 
 table
-defalut: {}
+default: {}
 
 You can set any function you want to use for formatting selection.
 Set tables with the value which has as 'cmd' key a function that returns
@@ -467,7 +467,7 @@ with the value which has as 'cmd' key a function. Check
 replace_symbols ~
 
 table
-defalut: {
+default: {
         translate_shell = {
             ["="] = "{@E@}",
             ["#"] = "{@S@}",
