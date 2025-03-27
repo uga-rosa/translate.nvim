@@ -1,5 +1,7 @@
 local M = {}
 
+local json_encode = vim.json and vim.json.encode or vim.fn.json_encode
+
 ---@param url string
 ---@param lines string[]
 ---@param command_args table
@@ -16,21 +18,17 @@ function M._cmd(url, lines, command_args)
     "POST",
     "-s",
     url,
-    "-d",
-    "auth_key=" .. vim.g.deepl_api_auth_key,
-    "-d",
-    "target_lang=" .. command_args.target,
+    "--header",
+    "Content-Type: application/json",
+    "--header",
+    "Authorization: DeepL-Auth-Key " .. vim.g.deepl_api_auth_key,
+    "--data",
+    json_encode({
+      text = lines,
+      target_lang = command_args.target,
+      source_lang = command_args.source,
+    })
   }
-
-  for _, t in ipairs(lines) do
-    table.insert(args, "-d")
-    table.insert(args, "text=" .. t)
-  end
-
-  if command_args.source then
-    table.insert(args, "-d")
-    table.insert(args, "source_lang" .. command_args.source)
-  end
 
   return cmd, args
 end
