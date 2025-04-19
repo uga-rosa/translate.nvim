@@ -42,9 +42,9 @@ This plugin has default settings, so there is no need to call setup if you want 
 
 This is my setting.
 
-```vim
-let g:deepl_api_auth_key = 'MY_AUTH_KEY'
-lua <<EOL
+```lua
+vim.g.deepl_api_auth_key = "MY_AUTH_KEY"
+
 require("translate").setup({
     default = {
         command = "deepl_pro",
@@ -57,7 +57,6 @@ require("translate").setup({
         },
     },
 })
-EOL
 ```
 
 See help for available options.
